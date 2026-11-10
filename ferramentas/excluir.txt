@@ -1,0 +1,3 @@
+# Produtos que NUNCA devem aparecer no site (um código por linha; # comenta)
+6149  # testee - produto de teste
+20874 # teste compras

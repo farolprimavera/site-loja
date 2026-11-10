@@ -1,0 +1,107 @@
+/* ==========================================================
+   componentes.css — peças usadas em várias páginas:
+   botões, cartões de produto, selos, quantidade, janela
+   ========================================================== */
+
+/* ---------- botões ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 22px; border-radius: 12px; border: 0; font-weight: 800; text-decoration: none; cursor: pointer; text-align: center; }
+.btn-principal { background: var(--verde-btn); color: #fff; }
+.btn-contorno { background: transparent; border: 2px solid var(--verde); color: var(--verde); }
+.btn-whats { background: var(--whats); color: #0b2e17; }
+.btn-oferta { background: var(--vermelho-forte); color: #fff; }
+.btn-waze { background: #33ccff; color: #0b2a36; }
+.btn[disabled] { background: var(--line); color: var(--muted); cursor: not-allowed; }
+.link-simples { border: 0; background: transparent; padding: 4px 0; color: var(--verde); font-weight: 700; text-decoration: underline; cursor: pointer; }
+
+/* ---------- grade e cartão de produto ---------- */
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+@media (max-width: 520px) { .grade { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .card-info { padding: 10px; } .card .btn-adicionar { margin: 4px 10px 10px; } .preco-vista, .preco-oferta { font-size: 18px; } .precos small { display: block; } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--raio); overflow: hidden; display: flex; flex-direction: column; }
+.card-link { text-decoration: none; display: flex; flex-direction: column; flex: 1; }
+.foto { position: relative; aspect-ratio: 4 / 3; max-width: 100%; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--line); }
+.foto img { width: 86%; height: 86%; object-fit: contain; }
+.foto .sem-foto { color: #c5cfc9; }
+.selo { position: absolute; top: 8px; left: 8px; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; }
+.selo-oferta { background: var(--vermelho-forte); color: #fff; }
+.selo-caixa { background: var(--verde-fundo); color: var(--verde); left: auto; right: 8px; }
+.card-info { padding: 12px 13px 8px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.marca { font-size: 11px; font-weight: 800; letter-spacing: .08em; color: var(--verde); text-transform: uppercase; min-height: 14px; }
+.card-nome { font-size: 14px; font-weight: 700; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.codigo { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.precos { margin-top: auto; padding-top: 6px; display: flex; flex-direction: column; gap: 1px; font-variant-numeric: tabular-nums; }
+.preco-vista { font-size: 21px; font-weight: 900; }
+.preco-oferta { font-size: 21px; font-weight: 900; color: var(--vermelho); }
+.precos small { font-size: 12px; font-weight: 600; color: var(--muted); }
+.preco-oferta small { color: var(--vermelho); font-weight: 700; }
+.preco-prazo { font-size: 12px; color: var(--muted); }
+.card .btn-adicionar { margin: 6px 13px 13px; min-height: 44px; border-radius: 10px; border: 0; background: var(--verde-btn); color: #fff; font-weight: 800; cursor: pointer; }
+.card.oferta .btn-adicionar { background: var(--vermelho-forte); }
+.vazio { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--raio); padding: 40px 20px; text-align: center; color: var(--muted); grid-column: 1 / -1; }
+
+/* ---------- etiquetas e avisos ---------- */
+.etiquetas { display: flex; flex-wrap: wrap; gap: 8px; }
+.etiqueta { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 5px 10px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.etiqueta span { color: var(--muted); }
+.etiqueta.ok { background: var(--verde-fundo); color: var(--verde); border-color: transparent; font-weight: 800; }
+.alerta { font-size: 13px; font-weight: 700; border-radius: 8px; padding: 8px 10px; line-height: 1.4; }
+.alerta-vermelho { color: var(--vermelho); background: var(--vermelho-fundo); }
+.alerta-verde { color: var(--verde); background: var(--verde-fundo); }
+.dica { background: var(--amarelo-fundo); border-radius: 12px; padding: 12px 14px; font-size: 14px; }
+
+/* ---------- quantidade ---------- */
+.quantidade { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+.quantidade button { width: 46px; height: 48px; border: 0; background: transparent; font-size: 22px; font-weight: 700; cursor: pointer; }
+.quantidade output { min-width: 64px; text-align: center; font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+/* ---------- campo ---------- */
+.campo { width: 100%; height: 48px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); padding: 0 12px; font-size: 16px; }
+.campo:focus { outline: 2px solid var(--verde); outline-offset: 1px; }
+
+/* ---------- opções (retirar/receber, à vista/a prazo) ---------- */
+.opcoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.opcoes button { min-height: 52px; border-radius: 12px; border: 2px solid var(--line); background: var(--bg); font-weight: 800; cursor: pointer; }
+.opcoes button[aria-pressed="true"] { border-color: var(--verde-btn); background: var(--verde-btn); color: #fff; }
+
+/* ---------- bloco branco ---------- */
+.bloco { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.bloco h2 { font-size: 20px; font-weight: 800; }
+
+/* ---------- atalho (simulador, WhatsApp) ---------- */
+.atalho { display: flex; align-items: center; gap: 12px; border: 2px solid var(--line); background: var(--surface); border-radius: var(--raio); padding: 12px 16px; text-decoration: none; }
+.atalho.whats { border-color: var(--whats); }
+.atalho .bola { flex: none; width: 42px; height: 42px; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+
+/* ---------- janela "adicionado ao carrinho" ---------- */
+.janela { border: 0; border-radius: 18px; padding: 22px; width: min(440px, calc(100% - 32px)); background: var(--surface); color: var(--text); box-shadow: 0 16px 40px rgba(0, 0, 0, .3); }
+.janela::backdrop { background: rgba(0, 0, 0, .45); }
+.janela-corpo { display: flex; flex-direction: column; gap: 14px; }
+.janela-topo { display: flex; gap: 12px; align-items: center; }
+.janela-check { flex: none; width: 46px; height: 46px; border-radius: 999px; background: var(--verde-btn); color: #fff; display: flex; align-items: center; justify-content: center; }
+.janela-qtd { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--bg); border-radius: 12px; padding: 10px 12px; }
+
+/* ---------- Black Friday ---------- */
+.btn-black { background: #111; color: #ffd400; box-shadow: 0 0 0 2px #ffd400 inset; }
+.selo-black { background: #111; color: #ffd400; }
+.preco-black { font-size: 21px; font-weight: 900; color: var(--text); }
+.preco-black small { color: var(--text); font-weight: 700; }
+.card.black { border: 2px solid #111; }
+.card.black .btn-adicionar { background: #111; color: #ffd400; }
+.alerta-black { color: #ffd400; background: #111; }
+:root[data-theme="dark"] .card.black { border-color: #ffd400; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .card.black { border-color: #ffd400; } }
+@media (max-width: 520px) { .preco-black { font-size: 18px; } }
+.preco-black small { display: block; }
+
+/* desconto das ofertas em cima do preço a prazo */
+.selo-desconto { top: auto; bottom: 8px; font-size: 14px; padding: 5px 9px; background: var(--vermelho-forte); color: #fff; }
+.selo-desconto.black { background: #ffd400; color: #111; }
+.preco-de { font-size: 13px; color: var(--muted); }
+.preco-de s { text-decoration-thickness: 1.5px; }
+
+/* esgotado: aparece no site, mas não vai para o carrinho */
+.selo-esgotado { background: #4a524e; color: #fff; }
+.card.esgotado .foto img { filter: grayscale(.85); opacity: .7; }
+.card.esgotado .preco-vista, .card.esgotado .preco-oferta, .card.esgotado .preco-black { color: var(--muted); }
+.card .btn-consultar { display: flex; align-items: center; justify-content: center; text-decoration: none; background: var(--surface); color: var(--text); box-shadow: 0 0 0 1.5px var(--line) inset; }
+.card.black .btn-consultar, .card.oferta .btn-consultar { background: var(--surface); color: var(--text); }
+.etiqueta.esgotado { background: #4a524e; color: #fff; font-weight: 800; }

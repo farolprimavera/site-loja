@@ -1,0 +1,39 @@
+/* página de um produto */
+.trilha { font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px; }
+.trilha a { color: var(--muted); }
+.produto { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+.produto-fotos { flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.produto-fotos .foto { border-radius: 18px; aspect-ratio: 1 / 1; border: 1px solid var(--line); }
+.miniaturas { display: flex; gap: 8px; flex-wrap: wrap; }
+.miniaturas button { width: 72px; height: 72px; padding: 4px; border-radius: 12px; border: 2px solid var(--line); background: #fff; cursor: pointer; }
+.miniaturas button[aria-pressed="true"] { border-color: var(--verde-btn); }
+.miniaturas img { width: 100%; height: 100%; object-fit: contain; }
+.produto-info { flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.produto-info h1 { font-size: 30px; font-weight: 900; }
+.caixa-preco { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 4px; font-variant-numeric: tabular-nums; }
+.caixa-preco .grande { font-size: 38px; font-weight: 900; line-height: 1.05; }
+.caixa-preco.oferta { background: var(--vermelho-fundo); border-color: transparent; }
+.caixa-preco.oferta .grande { color: var(--vermelho); }
+.compra { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.compra .btn { flex: 1 1 220px; min-height: 54px; font-size: 16px; }
+.calc-m2 { border: 2px solid var(--amarelo); background: var(--amarelo-fundo); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.produto-detalhes { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+.produto-detalhes > .descricao { flex: 2 1 460px; }
+.produto-detalhes > .ficha { flex: 1 1 320px; }
+.descricao ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; line-height: 1.55; }
+.ficha dl { margin: 0; }
+.ficha dl div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.ficha dt { color: var(--muted); }
+.ficha dd { margin: 0; font-weight: 700; text-align: right; }
+.caixa-preco.black { background: #111; color: #fff; border-color: #ffd400; }
+.caixa-preco.black .grande { color: #ffd400; }
+.caixa-preco.black .nota { color: #cfd6d2; }
+.caixa-preco.black .link-black { color: #ffd400; font-weight: 800; }
+.preco-de-grande { display: flex; align-items: center; gap: 10px; font-size: 16px; color: var(--muted); }
+.preco-de-grande s { text-decoration-thickness: 2px; }
+.pilula-desconto { font-size: 15px; font-weight: 900; padding: 3px 10px; border-radius: 999px; background: var(--vermelho-forte); color: #fff; }
+.caixa-preco.black .preco-de-grande { color: #cfd6d2; }
+.caixa-preco.black .pilula-desconto { background: #ffd400; color: #111; }
+.aviso-esgotado { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: var(--raio); background: var(--bg); border: 2px dashed #8a938e; }
+.aviso-esgotado strong { font-size: 17px; }
+.aviso-esgotado .btn { align-self: flex-start; }

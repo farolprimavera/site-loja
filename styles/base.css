@@ -1,0 +1,72 @@
+/* ==========================================================
+   base.css — cores, fontes e regras gerais do site
+   Cores da marca Farol da Primavera: verde, vermelho, amarelo.
+   Tema claro e escuro: o escuro segue o celular/computador do
+   cliente, ou o botão de tema do cabeçalho.
+   ========================================================== */
+
+:root {
+  --bg: #f4f6f5;
+  --surface: #ffffff;
+  --text: #17201b;
+  --muted: #56615b;
+  --line: #e2e8e4;
+
+  --topo: #0e5a3a;          /* verde do cabeçalho */
+  --verde: #0e7a4c;         /* textos e destaques verdes */
+  --verde-btn: #0e5a3a;     /* botões principais */
+  --verde-fundo: #eaf6ef;
+  --vermelho: #b30d27;      /* textos de oferta */
+  --vermelho-forte: #c8102e;/* selo e botão de Super Oferta */
+  --vermelho-fundo: #fdeeee;
+  --amarelo: #f5c400;
+  --amarelo-fundo: #fff6d1;
+  --whats: #25d366;
+
+  --campo-topo: rgba(0, 0, 0, .22);
+  --sombra: rgba(16, 32, 24, .10);
+
+  --fonte: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --raio: 14px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121614; --surface: #1b211e; --text: #e4e9e6; --muted: #a3afa8; --line: #2f3833;
+    --topo: #16201b; --verde: #6fcb94; --verde-fundo: #16241c; --vermelho: #ff8a8a; --vermelho-fundo: #2a1719;
+    --amarelo-fundo: #2a2612; --campo-topo: rgba(255, 255, 255, .10); --sombra: rgba(0, 0, 0, .4);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121614; --surface: #1b211e; --text: #e4e9e6; --muted: #a3afa8; --line: #2f3833;
+  --topo: #16201b; --verde: #6fcb94; --verde-fundo: #16241c; --vermelho: #ff8a8a; --vermelho-fundo: #2a1719;
+  --amarelo-fundo: #2a2612; --campo-topo: rgba(255, 255, 255, .10); --sombra: rgba(0, 0, 0, .4);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--fonte);
+  font-size: 15px;
+  line-height: 1.45;
+}
+img { max-width: 100%; display: block; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.15; text-wrap: balance; margin: 0; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.nota { font-size: 13px; color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

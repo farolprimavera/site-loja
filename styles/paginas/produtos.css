@@ -1,0 +1,27 @@
+/* produtos e super ofertas: categorias ao lado + grade */
+.catalogo { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.filtros { flex: 1 1 240px; max-width: 290px; min-width: 0; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 130px); max-height: calc(100vh - 150px); overflow: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 10px; }
+@media (max-width: 860px) { .filtros { position: static; max-width: none; max-height: none; flex-basis: 100%; } }
+.filtros h2 { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 8px 8px 6px; }
+.cat { width: 100%; display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 0; background: transparent; text-align: left; padding: 9px 10px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+.cat:hover { background: var(--bg); }
+.cat[aria-pressed="true"] { background: var(--verde-fundo); color: var(--verde); }
+.cat .qtd { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 500; }
+.subcats { display: flex; flex-direction: column; padding-left: 12px; margin-bottom: 4px; }
+.subcats .cat { font-weight: 500; font-size: 14px; padding: 7px 10px; }
+.catalogo-lista { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.barra { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.barra h1 { font-size: 26px; font-weight: 900; }
+.barra .resultado { font-size: 14px; color: var(--muted); }
+.barra select { width: auto; }
+.mais { align-self: center; }
+
+/* página Black Friday */
+.black-topo { background: #111; color: #fff; border-radius: 18px; padding: 26px 24px; display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; }
+.black-topo h1 { margin: 0; font-size: clamp(32px, 6vw, 52px); font-weight: 900; line-height: 1; color: #ffd400; letter-spacing: -.01em; }
+.black-topo p { margin: 8px 0 0; color: #e7ece9; font-size: 16px; }
+.black-topo .regras-black { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.black-topo .regras-black span { border: 1px solid #ffd400; color: #ffd400; border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 800; }
+.black-topo img { width: 100%; border-radius: 12px; }
+.aviso-black { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; background: var(--amarelo-fundo); border: 2px solid var(--amarelo); border-radius: var(--raio); padding: 14px 16px; }
+.aviso-black strong { font-size: 16px; }

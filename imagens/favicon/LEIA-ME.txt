@@ -1,0 +1,16 @@
+Colar no <head> de TODAS as páginas do site:
+
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="imagens/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="imagens/favicon/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0A5A3A">
+
+Arquivos:
+- favicon.ico (raiz do site)        -> aba do navegador (16, 32 e 48 px)
+- favicon.svg                        -> aba do navegador em navegadores modernos (versão simplificada para tamanho pequeno)
+- farol-icone.svg                    -> versão vetorial completa, para usar onde quiser
+- apple-touch-icon.png (180 px)      -> atalho na tela do iPhone/iPad
+- icon-192.png / icon-512.png        -> atalho e app instalado no Android
+- icon-maskable-512.png              -> versão com margem para Android que corta o ícone em círculo
+- site.webmanifest (raiz do site)    -> nome, cores e ícones do "instalar app"

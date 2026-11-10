@@ -1,0 +1,12 @@
+# Planilhas e PDFs do sistema NUNCA vão para o GitHub (o site é público)
+ferramentas/entrada/
+ferramentas/relatorio.txt
+*.xls
+*.xlsx
+*.pdf
+*.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/

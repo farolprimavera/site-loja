@@ -1,0 +1,107 @@
+/* ==========================================================
+   layout.css — cabeçalho, menu, rodapé e estrutura das páginas
+   ========================================================== */
+
+.lado { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.largura { max-width: 1240px; margin: 0 auto; }
+
+/* faixa do topo do celular (relógio/bateria) na cor do cabeçalho */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--topo); }
+
+/* ---------- cabeçalho ---------- */
+.cabecalho { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--topo); box-shadow: 0 2px 12px var(--sombra); }
+.cabecalho-linha { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; padding-block: 10px; }
+.logo { background: #fff; border-radius: 12px; padding: 5px 9px; display: flex; }
+.logo img { height: 46px; width: auto; }
+.busca { display: flex; align-items: center; background: var(--campo-topo); border-radius: 999px; height: 46px; padding: 0 6px 0 18px; margin: 0; }
+.busca input { flex: 1; min-width: 0; border: 0; background: transparent; color: #fff; font-size: 16px; outline: none; }
+.busca input::placeholder { color: rgba(255, 255, 255, .85); }
+.busca button { width: 38px; height: 38px; border: 0; border-radius: 999px; background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.acoes { display: flex; gap: 8px; }
+.icone-btn { width: 44px; height: 44px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .3); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; text-decoration: none; }
+.icone-btn.carrinho { background: var(--amarelo); color: #17201b; border: 0; }
+.contador { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--vermelho-forte); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; border: 2px solid var(--topo); }
+@media (max-width: 720px) {
+  .cabecalho-linha { grid-template-columns: auto 1fr; }
+  .busca { grid-column: 1 / -1; grid-row: 2; }
+  .acoes { justify-self: end; }
+}
+
+/* ---------- menu ---------- */
+.menu { background: var(--surface); border-bottom: 1px solid var(--line); }
+.menu .largura { display: flex; gap: 4px; align-items: center; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+.menu .largura::-webkit-scrollbar { display: none; }
+.menu a { padding: 13px 14px; font-weight: 600; text-decoration: none; }
+.menu a[aria-current="page"] { color: var(--verde); box-shadow: inset 0 -3px 0 var(--verde); font-weight: 800; }
+.menu a.menu-oferta { margin: 0 6px; padding: 7px 14px; border-radius: 999px; background: var(--vermelho-forte); color: #fff; font-weight: 800; }
+.menu a.menu-oferta[aria-current="page"] { box-shadow: 0 0 0 3px var(--vermelho-fundo); }
+
+/* ---------- conteúdo ---------- */
+.conteudo { padding-block: 22px 72px; display: flex; flex-direction: column; gap: 32px; min-height: 60vh; }
+.secao { display: flex; flex-direction: column; gap: 14px; }
+.secao-titulo { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; }
+.secao-titulo h2 { font-size: 24px; font-weight: 900; }
+.secao-titulo a { font-weight: 700; color: var(--verde); }
+.titulo-pagina { font-size: 32px; font-weight: 900; }
+
+/* ---------- rodapé ---------- */
+.rodape { background: var(--topo); color: #e4e9e6; }
+.rodape .largura { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; padding-block: 30px; font-size: 14px; }
+.rodape strong { color: #fff; }
+.rodape p { margin: 6px 0 0; }
+.rodape .redes { display: flex; flex-direction: column; gap: 4px; }
+.rodape-base { border-top: 1px solid rgba(255, 255, 255, .12); font-size: 12px; opacity: .8; }
+.rodape-base .largura { display: block; padding-block: 14px; }
+
+/* ---------- botão flutuante do WhatsApp ---------- */
+.whats-flutuante { position: fixed; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 25; width: 60px; height: 60px; border-radius: 999px; background: var(--whats); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(0, 0, 0, .28); }
+
+/* Black Friday no menu: canto direito no computador, primeiro item no celular (o menu rola de lado) */
+.menu a.menu-black { order: 99; margin-left: auto; padding: 7px 16px; border-radius: 999px; background: #111; color: #ffd400; font-weight: 900; letter-spacing: .02em; box-shadow: 0 0 0 2px #ffd400 inset; }
+.menu a.menu-black[hidden] { display: none; }
+.menu a.menu-black[aria-current="page"] { box-shadow: 0 0 0 2px #ffd400 inset, 0 0 0 3px #111; }
+@media (max-width: 720px) { .menu a.menu-black { order: -1; margin: 0 6px 0 0; } }
+
+/* Catálogos interativos: botão no menu + painel que abre embaixo */
+.menu .menu-catalogos { display: inline-flex; align-items: center; gap: 6px; padding: 13px 14px; border: 0; background: none; font: inherit; font-weight: 600; color: inherit; cursor: pointer; }
+.menu .menu-catalogos svg { transition: transform .2s; }
+.menu .menu-catalogos[aria-expanded="true"] { color: var(--verde); }
+.menu .menu-catalogos[aria-expanded="true"] svg { transform: rotate(180deg); }
+.menu-painel { position: fixed; z-index: 30; width: min(340px, calc(100vw - 32px)); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 12px 32px var(--sombra); padding: 6px; display: flex; flex-direction: column; }
+.menu-painel[hidden] { display: none; }
+.menu-painel a { display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: 10px; text-decoration: none; }
+.menu-painel a:hover, .menu-painel a:focus-visible { background: var(--verde-fundo); }
+.menu-painel a + a { border-top: 1px solid var(--line); }
+.menu-painel .bola { flex: none; width: 40px; height: 40px; border-radius: 12px; background: var(--verde-fundo); color: var(--verde); display: flex; align-items: center; justify-content: center; }
+.menu-painel strong { display: block; font-size: 15px; }
+.menu-painel .nota { font-size: 13px; }
+.menu-painel .icone-catalogo { flex: none; width: 40px; height: 40px; border-radius: 10px; }
+
+/* ---------- menu hambúrguer (celular) ---------- */
+.btn-menu { display: none; }
+.gaveta[hidden] { display: none; }
+.gaveta { position: fixed; inset: 0; z-index: 40; }
+.gaveta-fundo { position: absolute; inset: 0; background: rgba(0, 0, 0, .45); animation: aparecer .2s; }
+.gaveta-painel { position: absolute; top: 0; right: 0; bottom: 0; width: min(330px, 86vw); background: var(--surface); box-shadow: -8px 0 30px var(--sombra); display: flex; flex-direction: column; gap: 2px; padding: calc(env(safe-area-inset-top, 0px) + 10px) 14px calc(env(safe-area-inset-bottom, 0px) + 18px); overflow-y: auto; animation: deslizar .22s ease-out; }
+.gaveta-topo { display: flex; justify-content: space-between; align-items: center; padding: 4px 4px 10px; border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+.gaveta-topo strong { font-size: 18px; }
+.gaveta-fechar { width: 44px; height: 44px; border: 0; border-radius: 999px; background: var(--bg); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.gaveta-link { padding: 13px 10px; border-radius: 10px; font-weight: 700; font-size: 17px; text-decoration: none; }
+.gaveta-link[aria-current="page"] { background: var(--verde-fundo); color: var(--verde); }
+.gaveta-link.oferta { color: var(--vermelho); }
+.gaveta-black { margin: 4px 0 6px; padding: 13px 14px; border-radius: 12px; background: #111; color: #ffd400; font-weight: 900; font-size: 17px; text-decoration: none; box-shadow: 0 0 0 2px #ffd400 inset; }
+.gaveta-black[hidden] { display: none; }
+.gaveta-secao { margin: 14px 10px 4px; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.gaveta-catalogo { display: flex; gap: 12px; align-items: center; padding: 9px 10px; border-radius: 10px; text-decoration: none; }
+.gaveta-catalogo img { flex: none; border-radius: 9px; }
+.gaveta-catalogo strong { display: block; font-size: 15px; }
+.gaveta-catalogo .nota { font-size: 13px; }
+.gaveta-whats { margin-top: auto; }
+body.sem-rolagem { overflow: hidden; }
+@keyframes deslizar { from { transform: translateX(100%); } }
+@keyframes aparecer { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .gaveta-painel, .gaveta-fundo { animation: none; } }
+@media (max-width: 720px) {
+  .menu { display: none; }
+  .btn-menu { display: flex; }
+}

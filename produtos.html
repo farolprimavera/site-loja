@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Produtos · Farol da Primavera</title>
+  <meta name="description" content="Catálogo completo da Farol da Primavera: materiais básicos, pisos, tintas, hidráulica, elétrica e acabamento.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Farol da Primavera">
+  <meta property="og:title" content="Produtos · Farol da Primavera">
+  <meta property="og:description" content="Catálogo completo da Farol da Primavera: materiais básicos, pisos, tintas, hidráulica, elétrica e acabamento.">
+  <meta property="og:image" content="imagens/marca/compartilhar.jpg">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" href="imagens/favicon/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="imagens/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0A5A3A">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/componentes.css">
+  <link rel="stylesheet" href="styles/paginas/produtos.css">
+  <script>try{var t=localStorage.getItem('farol-tema');if(t)document.documentElement.dataset.theme=JSON.parse(t)}catch(e){}</script>
+  <script type="module" src="script/app.js"></script>
+  <script type="module" src="script/paginas/produtos.js"></script>
+</head>
+<body data-pagina="produtos">
+  <main class="conteudo largura lado" id="conteudo">
+    <div class="catalogo">
+      <aside class="filtros" aria-label="Categorias"><h2>Categorias</h2><div id="categorias"></div></aside>
+      <section class="catalogo-lista">
+        <div class="barra">
+          <div><h1 id="titulo">Todos os produtos</h1><span class="resultado" id="resultado" role="status">Carregando…</span></div>
+          <label><span class="sr-only">Ordenar por</span>
+            <select class="campo" id="ordem">
+              <option value="nome">Ordem alfabética</option>
+              <option value="menor">Menor preço</option>
+              <option value="maior">Maior preço</option>
+              <option value="desconto">Maior desconto</option>
+            </select></label>
+        </div>
+        <div class="grade" id="grade"></div>
+        <button class="btn btn-contorno mais" type="button" id="mais" hidden>Mostrar mais</button>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

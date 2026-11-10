@@ -1,0 +1,35 @@
+/* início: carrossel, faixa de ofertas, categorias */
+.carrossel { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 16 / 9; max-width: 100%; background: var(--line); }
+.carrossel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .6s; }
+.carrossel img:not(.ativo) { opacity: 0; pointer-events: none; }
+/* área clicável só em cima do botão "Confira nossas ofertas" do banner principal */
+.banner-botao { position: absolute; left: 5%; top: 76%; width: 34.2%; height: 8.6%; border-radius: 999px; z-index: 1; }
+.banner-botao:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.banner-botao[hidden] { display: none; }
+.carrossel.um-so .carrossel-seta, .carrossel.um-so .carrossel-pontos { display: none; }
+.carrossel-seta { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 999px; border: 0; background: rgba(255, 255, 255, .9); color: #17201b; cursor: pointer; font-size: 24px; font-weight: 700; box-shadow: 0 2px 8px rgba(0, 0, 0, .2); }
+.carrossel-seta.esq { left: 12px; } .carrossel-seta.dir { right: 12px; }
+.carrossel-pontos { position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
+.carrossel-pontos button { width: 10px; height: 10px; border-radius: 999px; border: 0; background: rgba(255, 255, 255, .85); padding: 0; cursor: pointer; }
+.carrossel-pontos button.ativo { width: 26px; background: var(--amarelo); }
+
+.faixa-ofertas { background: var(--vermelho-fundo); border-radius: 18px; padding: 20px; }
+.faixa-ofertas h2 { color: var(--vermelho); }
+.aviso-oferta { font-size: 14px; color: var(--muted); }
+.aviso-oferta strong { color: var(--text); }
+
+/* vitrines: 4 por linha no computador, faixa que rola de lado no celular */
+.grade.vitrine { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 600px) {
+  .grade.vitrine { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 6px; scrollbar-width: none; }
+  .grade.vitrine::-webkit-scrollbar { display: none; }
+  .grade.vitrine .card { flex: 0 0 46%; scroll-snap-align: start; }
+}
+
+.categorias { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.categoria { background: var(--surface); border: 1px solid var(--line); border-radius: var(--raio); padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; text-decoration: none; }
+.categoria .ico { width: 52px; height: 52px; border-radius: 14px; background: var(--verde-fundo); color: var(--verde); display: flex; align-items: center; justify-content: center; }
+.categoria strong { font-size: 14px; line-height: 1.25; }
+.categoria span { font-size: 12px; color: var(--muted); }
+.atalhos { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+@media (max-width: 600px) { .carrossel-seta { width: 32px; height: 32px; font-size: 18px; opacity: .85; } .carrossel-seta.esq { left: 6px; } .carrossel-seta.dir { right: 6px; } .carrossel { border-radius: 12px; } }
