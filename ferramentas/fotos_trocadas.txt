@@ -3,3 +3,31 @@
 # Mais de uma foto: separe por vírgula, a primeira é a principal:  908 = frente.png, lado.png
 # As fotos daqui SUBSTITUEM todas as outras do produto. Quando corrigirem no Automec, pode apagar a linha.
 908 = massa-sutil.png  # Massa Suttil: foto do cadastro estava errada
+
+# Revisão das galerias (11/11/2026)
+1005350 = 1005350_0_20260706140201.jpg  # Balde Iquine Pintalar Vinil Acrilico Areia 15LT: Pintalar: tirar a cartela do Diapiso
+1003478 = 1003478_0_20260706212959.jpg  # Balde Iquine Pintalar Vinil Acrilico Bc. Gelo 15L: Pintalar: tirar a cartela do Diapiso
+1003521 = 1003521_0_20260706213022.jpg  # Balde Iquine Pintalar Vinil Acrilico Branco Neve: Pintalar: tirar a cartela do Diapiso
+1005996 = 1005996_0_20260702230345.jpg  # Balde Iquine Pintalar Vinil Acrilico Marfim 15LT: Pintalar: tirar a cartela do Diapiso
+1005546 = 1005546_0_20260705153806.JPG  # Balde Iquine Pintalar Vinil Acrilico Palha 15LT: Pintalar: tirar a cartela do Diapiso
+1005506 = 1005506_0_20260705153411.jpg  # Balde Iquine Pintalar Vinil Acrilico Perola: Pintalar: tirar a cartela do Diapiso
+1006012 = 1006012_0_20260705155553.PNG  # Balde Iquine Pintalar Vinil Acrilico Pessego 15LT: Pintalar: tirar a cartela do Diapiso
+1010729 = 1010729_0_20260705185003.PNG  # Balde Iquine Pintalar Vinil Acrilico Rondon: Pintalar: tirar a cartela do Diapiso
+1005984 = 1005984_0_20260705155532.jpg  # Balde Iquine Pintalar Vinil Acrilico Vd. Piscina: Pintalar: tirar a cartela do Diapiso
+1003682 = 1003682_0_20260610150653.jpg  # Galao Iquine Pintalar Vinil Acrilico Am. Canario: Pintalar: tirar a cartela do Diapiso
+1004079 = 1004079_0_20260608233546.jpg  # Galao Iquine Pintalar Vinil Acrilico Areia: Pintalar: tirar a cartela do Diapiso
+1004449 = 1004449_0_20260706011917.jpg  # Galao Iquine Pintalar Vinil Acrilico Azul Ceu: Pintalar: tirar a cartela do Diapiso
+1004078 = 1004078_0_20260608153132.jpg  # Galao Iquine Pintalar Vinil Acrilico Branco Gelo: Pintalar: tirar a cartela do Diapiso
+1004437 = 1004437_0_20260706140139.jpg  # Galao Iquine Pintalar Vinil Acrilico Branco Neve: Pintalar: tirar a cartela do Diapiso
+1003569 = 1003569_0_20260608232555.jpg  # Galao Iquine Pintalar Vinil Acrilico Marfim: Pintalar: tirar a cartela do Diapiso
+1003520 = 1003520_0_20260706120128.jpg  # Galao Iquine Pintalar Vinil Acrilico Palha: Pintalar: tirar a cartela do Diapiso
+1003568 = 1003568_0_20260702211634.jpg  # Galao Iquine Pintalar Vinil Acrilico Perola: Pintalar: tirar a cartela do Diapiso
+1003570 = 1003570_0_20260608232617.jpg  # Galao Iquine Pintalar Vinil Acrilico Pessego: Pintalar: tirar a cartela do Diapiso
+1010687 = 1010687_0_20260609041317.JPG  # Galao Iquine Pintalar Vinil Acrilico Pitanga: Pintalar: tirar a cartela do Diapiso
+1003683 = 1003683_0_20260608232828.jpg  # Galao Iquine Pintalar Vinil Acrilico Vd Primavera: Pintalar: tirar a cartela do Diapiso
+1003572 = 1003572_0_20260608232639.jpg  # Galao Iquine Pintalar Vinil Acrilico Vd. Piscina: Pintalar: tirar a cartela do Diapiso
+1003218 = d4b29146-3ff4-4516-a524-fd8dca14a634.jpg  # Registro Pressao Viqua Marrom 25: registro: só o marrom
+1012334 = 1012334_0_20260703050904.jpg  # Armario Atenas 116,2CM Branco: foto repetida
+11236 = 11236_0_20260705203124.jpg, 11236_2_20260703170417.jpg  # Galao Coral Coralar + Desempenho Azul Arpoador: cartela repetida
+1009393 = 1009393_0_20260706030608.jpg  # Porta Cantareira Branca 210X70: tirar a 2ª foto
+1008964 = valvula-7-8-n2-curta.png  # Valvula 7/8 Pia/lavatorio N2 Amanco: tirar a 2ª foto

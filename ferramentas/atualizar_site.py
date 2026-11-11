@@ -357,9 +357,10 @@ class Fotos:
             for f in self.origem.rglob("*"):
                 if f.is_file() and f.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"):
                     self.indice[f.name.lower()] = f
-                    m = re.match(r"^(\d+)_(\d+)_(\d{14})$", f.stem)
+                    # padrão do sistema "908_1_20260601120000" ou o curto "908_1" (para pôr foto extra na mão)
+                    m = re.match(r"^(\d+)_(\d{1,2})(?:_(\d{14}))?$", f.stem)
                     if m:
-                        self.por_codigo.setdefault(m.group(1), []).append((int(m.group(2)), m.group(3), f))
+                        self.por_codigo.setdefault(m.group(1), []).append((int(m.group(2)), m.group(3) or "0", f))
             print(f"  fotos encontradas: {len(self.indice)}")
         else:
             aviso(f"pasta de fotos não encontrada ({self.origem}): o site fica sem fotos.")
@@ -654,6 +655,9 @@ def gravar(catalogo, detalhes, data_hora, contagem, fotos, estatistica):
     (DADOS / "detalhes").mkdir(exist_ok=True)
 
     catalogo.sort(key=lambda p: (p["grupo"], p["sub"], sem_acento(p["nome"])))
+    det_de = lambda cod: detalhes.get(cod[-2:].zfill(2), {}).get(cod, {})
+    galerias = [(p["cod"], p["nome"], len(det_de(p["cod"])["galeria"]))
+                for p in catalogo if det_de(p["cod"]).get("galeria")]
     saida = {
         "atualizado": data_hora.strftime("%Y-%m-%dT%H:%M"),
         "total": len(catalogo),
@@ -687,6 +691,9 @@ def gravar(catalogo, detalhes, data_hora, contagem, fotos, estatistica):
         "",
         "Avisos:" if avisos else "Sem avisos.",
         *[f"  - {a}" for a in avisos],
+        "",
+        f"Produtos com MAIS DE UMA foto ({len(galerias)}) — confira se a 2ª foto é mesmo do produto:",
+        *[f"  - {cod} {nome} ({n} fotos)" for cod, nome, n in galerias],
         "",
         f"Produtos do site SEM foto ({len(fotos.sem_foto)}):",
         *[f"  - {x}" for x in fotos.sem_foto],
