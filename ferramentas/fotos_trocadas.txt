@@ -1,0 +1,4 @@
+# Fotos trocadas na mão (quando a foto do cadastro do Automec está errada)
+# Formato:  código = nome do arquivo na pasta de fotos   (# comenta)
+# A foto daqui vale mais que a do cadastro. Quando corrigirem no Automec, pode apagar a linha.
+908 = massa-sutil.png  # Massa Suttil: foto do cadastro estava errada

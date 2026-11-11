@@ -17,6 +17,7 @@ REGRAS DO SITE
   - Só entra produto ATIVO, com estoque da MATRIZ maior que zero e com preço à vista.
   - Super Oferta só vale se for MENOR que o preço à vista.
   - Códigos em ferramentas/excluir.txt nunca entram (produtos de teste etc.).
+  - ferramentas/fotos_trocadas.txt troca a foto de um produto quando a do cadastro está errada.
   - Pisos: m² por caixa, peças, PEI e junta são lidos da descrição.
   - NADA de custo, fornecedor ou quantidade exata vai para o site:
     só as colunas da lista CAMPOS_PERMITIDOS chegam no JSON.
@@ -501,6 +502,16 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
             if linha:
                 excluir.add(linha)
 
+    # fotos trocadas na mão: ferramentas/fotos_trocadas.txt ("908 = massa-sutil.png"), vale mais que o cadastro
+    trocadas = {}
+    arq_trocadas = PASTA_FERRAMENTAS / "fotos_trocadas.txt"
+    if arq_trocadas.exists():
+        for linha in arq_trocadas.read_text(encoding="utf-8").splitlines():
+            linha = linha.split("#")[0].strip()
+            if "=" in linha:
+                cod, arquivo = (x.strip() for x in linha.split("=", 1))
+                trocadas[cod] = arquivo
+
     # produtos que estão no Automec (e no relatório de preços, ou seja, ativos) mas não no Marketplace
     no_marketplace = set(cadastro["SKU"])
     no_relatorio = set(precos["cod"])
@@ -576,7 +587,7 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
         nome_site, lote, local = separar_lote(r["Nome"]) if eh_piso else (r["Nome"], "", "")
 
         info_automec = automec.get(cod, {})
-        fotos_prod = fotos.preparar(cod, info_automec.get("foto", ""), r["Nome"])
+        fotos_prod = fotos.preparar(cod, trocadas.get(cod) or info_automec.get("foto", ""), r["Nome"])
         un = "m²" if piso else UNIDADES.get(info_automec.get("un", ""), None)
 
         item = {
