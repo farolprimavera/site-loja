@@ -1,4 +1,5 @@
 # Fotos trocadas na mão (quando a foto do cadastro do Automec está errada)
-# Formato:  código = nome do arquivo na pasta de fotos   (# comenta)
-# A foto daqui vale mais que a do cadastro. Quando corrigirem no Automec, pode apagar a linha.
+# Formato:  código = arquivo da pasta de fotos            (# comenta)
+# Mais de uma foto: separe por vírgula, a primeira é a principal:  908 = frente.png, lado.png
+# As fotos daqui SUBSTITUEM todas as outras do produto. Quando corrigirem no Automec, pode apagar a linha.
 908 = massa-sutil.png  # Massa Suttil: foto do cadastro estava errada

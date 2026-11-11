@@ -398,15 +398,26 @@ class Fotos:
             aviso(f"foto com defeito, ignorada: {origem.name} ({erro})")
             return None
 
-    def preparar(self, cod, arquivo_cadastro, nome_produto):
-        """Lista de nomes-base das fotos do produto; a primeira é a principal."""
+    def preparar(self, cod, arquivo_cadastro, nome_produto, trocadas=None):
+        """
+        Lista de nomes-base das fotos do produto; a primeira é a principal.
+        trocadas: fotos do fotos_trocadas.txt. Quando existem, são as ÚNICAS fotos do produto
+        (as do cadastro e as do padrão código_n_data ficam de fora, porque estavam erradas).
+        """
         caminhos = []
-        if arquivo_cadastro:
-            achado = self.indice.get(arquivo_cadastro.lower())
+        for arquivo in (trocadas or [arquivo_cadastro]):
+            if not arquivo:
+                continue
+            achado = self.indice.get(arquivo.lower())
             if achado:
                 caminhos.append(achado)
             else:
-                self.nao_achadas.append(f"{cod} {nome_produto} -> {arquivo_cadastro}")
+                self.nao_achadas.append(f"{cod} {nome_produto} -> {arquivo}")
+        if trocadas:
+            nomes = [n for n in (self.converter(c) for c in caminhos[:6]) if n]
+            if not nomes:
+                self.sem_foto.append(f"{cod} {nome_produto}")
+            return nomes
         # fotos extras no padrão código_1_..., código_2_... (fica a versão mais nova de cada número)
         mais_novas = {}
         for n, data, f in self.por_codigo.get(cod, []):
@@ -509,8 +520,8 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
         for linha in arq_trocadas.read_text(encoding="utf-8").splitlines():
             linha = linha.split("#")[0].strip()
             if "=" in linha:
-                cod, arquivo = (x.strip() for x in linha.split("=", 1))
-                trocadas[cod] = arquivo
+                cod, arquivos = (x.strip() for x in linha.split("=", 1))
+                trocadas[cod] = [a.strip() for a in arquivos.split(",") if a.strip()]
 
     # produtos que estão no Automec (e no relatório de preços, ou seja, ativos) mas não no Marketplace
     no_marketplace = set(cadastro["SKU"])
@@ -587,7 +598,7 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
         nome_site, lote, local = separar_lote(r["Nome"]) if eh_piso else (r["Nome"], "", "")
 
         info_automec = automec.get(cod, {})
-        fotos_prod = fotos.preparar(cod, trocadas.get(cod) or info_automec.get("foto", ""), r["Nome"])
+        fotos_prod = fotos.preparar(cod, info_automec.get("foto", ""), r["Nome"], trocadas.get(cod))
         un = "m²" if piso else UNIDADES.get(info_automec.get("un", ""), None)
 
         item = {
