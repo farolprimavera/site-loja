@@ -191,23 +191,35 @@ def ler_precos_pdf(arq):
             # quando o fabricante fica por cima da quantidade, os números vêm grudados nas letras:
             # pegamos os dígitos um a um, pela posição
             for c in pagina.chars:
-                if c["top"] > topo and 352 < c["x0"] < 405 and re.fullmatch(r"[-\d]", c["text"]):
+                if c["top"] > topo and 352 < c["x0"] < 405 and re.fullmatch(r"[-\d,]", c["text"]):
                     digitos.setdefault(round(c["top"]), []).append(c)
 
             for y in sorted(set(por_linha) | set(digitos)):
                 L = por_linha.get(y, [])
                 cod = [w for w in L if w["x0"] < 45 and re.fullmatch(r"\d+", w["text"])]
-                qtd = [w["text"] for w in L if 340 < w["x0"] < 405 and re.fullmatch(r"-?\d+", w["text"])]
+                # o sistema às vezes imprime a quantidade com sobra de conta: "-6,50000000000023" ou
+                # "-6,57252030578093E-14" (quase zero), e esse último pode vir grudado no preço à vista
+                qtd, vista_grudado = [], None
+                for w in L:
+                    if 320 < w["x0"] < 405:
+                        m = re.fullmatch(r"(-?\d+(?:,\d+)?(?:E[-+]?\d+)?)(R\$[\d.,]+)?", w["text"])
+                        if m:
+                            qtd.append(m.group(1))
+                            vista_grudado = m.group(2)
                 if not qtd and y in digitos:
-                    qtd = ["".join(c["text"] for c in sorted(digitos[y], key=lambda c: c["x0"]))]
+                    junto = "".join(c["text"] for c in sorted(digitos[y], key=lambda c: c["x0"]))
+                    if re.fullmatch(r"-?\d+(?:,\d+)?", junto):
+                        qtd = [junto]
                 precos = {k: [w for w in L if a <= w["x0"] < b and w["text"].startswith("R$")]
                           for k, (a, b) in colunas.items()}
+                if vista_grudado and not precos["vista"]:
+                    precos["vista"] = [{"text": vista_grudado}]
                 if cod:
                     linhas_saida.append({"cod": cod[0]["text"], "pagina": n})
                 if linhas_saida and (qtd or any(precos.values())):
                     atual = linhas_saida[-1]
                     if qtd and "qtd" not in atual:
-                        atual["qtd"] = numero_br(qtd[0])
+                        atual["qtd"] = round(float(qtd[0].replace(".", "").replace(",", ".")), 3)
                     for k, v in precos.items():
                         if v and k not in atual:
                             atual[k] = numero_br(v[0]["text"])
@@ -273,10 +285,21 @@ def ler_automec():
     Custo, Fornecedor e Qtde. NUNCA são lidos (o estoque vem do relatório de preços, só da matriz).
     Serve para a unidade e a foto de todos, e como cadastro dos produtos que não estão no Marketplace.
     """
-    arq = next((ENTRADA / n for n in ("cadastro.xlsx", "cadastro.xls") if (ENTRADA / n).exists()), None)
-    if not arq:
+    principal = next((ENTRADA / n for n in ("cadastro.xlsx", "cadastro.xls") if (ENTRADA / n).exists()), None)
+    if not principal:
         aviso("entrada/cadastro.xlsx não encontrado: produtos sem unidade, sem foto e só os do Marketplace.")
         return {}
+    # cadastro-*.xlsx: exportações menores (só os produtos novos, por exemplo). Somam ao cadastro principal
+    # e, se repetirem um código, valem mais que ele.
+    extras = sorted(f for f in ENTRADA.glob("cadastro-*.xls*") if not f.name.startswith("~$"))
+    dados = {}
+    for arq in [principal, *extras]:
+        dados.update(_ler_um_cadastro(arq))
+    print(f"  cadastro Automec: {len(dados)} produtos ({', '.join(a.name for a in [principal, *extras])})")
+    return dados
+
+
+def _ler_um_cadastro(arq):
     colunas = ["Código", "Produto", "Grupo", "Sub-grupo", "Unid. Estoque", "Caminho foto",
                "Código de Barras", "Observação", "Fabricante"]
     existentes = pd.read_excel(arq, nrows=0).columns
@@ -291,7 +314,6 @@ def ler_automec():
             "sub": r.get("Sub-grupo", "").strip(), "ean": re.sub(r"\.0$", "", r.get("Código de Barras", "").strip()),
             "obs": r.get("Observação", "").replace("_x000D_", "").strip(), "marca": r.get("Fabricante", "").strip(),
         }
-    print(f"  cadastro Automec: {len(dados)} produtos ({arq.name})")
     return dados
 
 
