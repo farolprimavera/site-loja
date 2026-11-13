@@ -82,7 +82,7 @@ if (!p) {
           <div class="etiquetas"><span class="etiqueta"><span>Cód.</span> <strong>${p.cod}</strong></span>${p.ean ? `<span class="etiqueta"><span>EAN</span> <strong>${p.ean}</strong></span>` : ''}${f.lote ? `<span class="etiqueta"><span>Lote</span> <strong>${esc(f.lote)}</strong></span>` : ''}${esgotado(p) ? '<span class="etiqueta esgotado">Esgotado</span>' : '<span class="etiqueta ok">Disponível</span>'}</div></div>
         ${preco}${caixa}
         ${esgotado(p) ? `<div class="aviso-esgotado" role="status"><strong>Produto esgotado no momento</strong>
-          <span class="nota">Ele ainda não pode ser pedido pelo site. Fale com o televendas para saber quando chega ou ver uma opção parecida.</span>
+          <span class="nota">Ele ainda não pode ser pedido pelo site. Fale com o televendas para ver uma opção parecida.</span>
           <a class="btn btn-whats" href="${consultaEsgotado(p)}" target="_blank" rel="noopener">Consultar no WhatsApp</a></div>` : `<div class="compra">
           <div class="quantidade" role="group" aria-label="Quantidade"><button type="button" data-delta="-1" aria-label="Diminuir">−</button><output id="qtd">${p.fator ? '1 cx' : '1'}</output><button type="button" data-delta="1" aria-label="Aumentar">+</button></div>
           <button class="btn ${p.bf ? 'btn-black' : p.super ? 'btn-oferta' : 'btn-principal'}" type="button" id="comprar">Adicionar ao carrinho</button>

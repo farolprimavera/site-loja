@@ -8,7 +8,7 @@ import { link } from './whatsapp.js';
 
 /** Produto sem estoque na matriz: aparece no site, mas não entra no carrinho. */
 export const esgotado = (p) => p.status === 'esgotado';
-export const consultaEsgotado = (p) => link(`Olá! Vi no site que o produto ${p.cod} — ${p.nome} está esgotado. Quando chega?`);
+export const consultaEsgotado = (p) => link(`Olá! Vi no site que o produto ${p.cod} — ${p.nome} está esgotado. Vocês têm uma opção parecida?`);
 
 const CAMINHOS = {
   'Básico': 'M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6',
