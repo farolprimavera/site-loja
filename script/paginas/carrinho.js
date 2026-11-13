@@ -39,7 +39,7 @@ function calcular() {
 function htmlItem(i) {
   const p = i.p;
   let aviso = '';
-  if (!podeEntregar(p) && carrinho.modo !== 'retirar') aviso = `<span class="alerta alerta-vermelho">${nomeOferta(p)}: não entregamos este produto. Só retirada na loja.</span>`;
+  if ((p.super || p.bf) && carrinho.modo !== 'retirar') aviso = `<span class="alerta alerta-vermelho">${nomeOferta(p)}: o preço de ${brl(p.bf ?? p.super)} vale só retirando na loja. Com entrega, sai pelo preço normal.</span>`;
   else if (p.bf) aviso = '<span class="alerta alerta-black">Black Friday: à vista ou em 3x sem juros.</span>';
   else if (p.super && carrinho.pag !== 'vista') aviso = `<span class="alerta alerta-vermelho">Na Super Oferta sai ${brl(p.super)} pagando à vista.</span>`;
   else if (!p.super && p.vistaRet && carrinho.modo !== 'retirar') aviso = `<span class="alerta alerta-verde">Retirando na loja: ${brl(p.vistaRet)}/${p.un || 'un'} à vista.</span>`;

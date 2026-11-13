@@ -37,3 +37,4 @@
 .aviso-esgotado { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: var(--raio); background: var(--bg); border: 2px dashed #8a938e; }
 .aviso-esgotado strong { font-size: 17px; }
 .aviso-esgotado .btn { align-self: flex-start; }
+.preco-normal strong { color: inherit; }

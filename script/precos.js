@@ -35,8 +35,11 @@ export const quantidadeVenda = (p, caixas) => (p.fator ? Math.round(caixas * p.f
 /** Quantas caixas para cobrir X m² (sempre arredonda para cima). */
 export const caixasPara = (p, m2) => Math.max(1, Math.ceil(m2 / p.fator - 1e-9));
 
-/** Itens de Super Oferta e de Black Friday não podem ser entregues. */
-export const podeEntregar = (p) => !p.super && !p.bf;
+/**
+ * Todo produto pode ser entregue. A Super Oferta e a Black Friday só valem retirando na loja;
+ * na entrega o produto sai pelo preço normal (precoUnitario já cuida disso).
+ */
+export const podeEntregar = () => true;
 
 /** Desconto da oferta (Black Friday ou Super Oferta) em cima do preço a prazo, em % inteiro. 0 = sem oferta. */
 export function descontoPrazo(p) {

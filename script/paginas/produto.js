@@ -30,14 +30,18 @@ if (!p) {
 
   const desc = descontoPrazo(p);
   const de = desc ? `<span class="preco-de-grande">De <s>${brl(p.prazo)}</s> <span class="pilula-desconto">-${desc}%</span></span>` : '';
+  // preço normal, pequeno: é o que vale para entrega ou fora das condições da oferta
+  const normal = `<span class="nota preco-normal">Preço normal à vista: <strong>${brl(p.vista)}</strong>${un} · com entrega</span>`;
   const preco = p.bf
     ? `<div class="caixa-preco black">${de}<span class="grande">${brl(p.bf)}<span class="nota">${un}</span></span>
         <strong>Black Friday · à vista ou em 3x sem juros, retirando na loja</strong>
+        ${normal}
         <span class="nota">Válido até 30/11 ou enquanto durar o estoque.</span>
         <a class="link-black" href="${link(`Olá! Quero consultar a disponibilidade do produto ${p.cod} — ${p.nome} da Black Friday.`)}" target="_blank" rel="noopener">Consulte a disponibilidade com o televendas →</a></div>`
     : p.super
     ? `<div class="caixa-preco oferta">${de}<span class="grande">${brl(p.super)}<span class="nota">${un}</span></span>
         <strong>Super Oferta · à vista e só retirando na loja</strong>
+        ${normal}
         </div>`
     : `<div class="caixa-preco"><span class="grande">${brl(p.vista)}<span class="nota"> ${un} à vista</span></span>
         <span>ou <strong>${brl(p.prazo)}</strong>${un} a prazo</span>
