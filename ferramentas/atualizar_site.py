@@ -527,7 +527,7 @@ def separar_lote(nome):
 
 
 # ---------------------------------------------------------------- 4. juntar e aplicar regras
-def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas, periodo):
+def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas, periodo, data_relatorio):
     excluir = set()
     arq_excluir = PASTA_FERRAMENTAS / "excluir.txt"
     if arq_excluir.exists():
@@ -537,6 +537,26 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
                 excluir.add(linha)
 
     # fotos trocadas na mão: ferramentas/fotos_trocadas.txt ("908 = massa-sutil.png"), vale mais que o cadastro
+    # esgotados na mão: ferramentas/esgotados.txt ("1006463 = 13/11/2026"). Vale até chegar um relatório
+    # de preços MAIS NOVO que a data da linha; daí em diante o estoque do relatório volta a mandar.
+    esgotados_mao = {}
+    arq_esg = PASTA_FERRAMENTAS / "esgotados.txt"
+    if arq_esg.exists():
+        for linha in arq_esg.read_text(encoding="utf-8").splitlines():
+            linha = linha.split("#")[0].strip()
+            if not linha:
+                continue
+            cod, _, data = (x.strip() for x in linha.partition("="))
+            try:
+                dia = datetime.strptime(data, "%d/%m/%Y").date() if data else None
+            except ValueError:
+                aviso(f"esgotados.txt: data inválida na linha do {cod} (use dd/mm/aaaa)")
+                dia = None
+            if dia and data_relatorio.date() > dia:
+                aviso(f"esgotados.txt: {cod} já tem relatório mais novo ({data_relatorio:%d/%m}); a linha pode ser apagada")
+                continue
+            esgotados_mao[cod] = dia
+
     trocadas = {}
     arq_trocadas = PASTA_FERRAMENTAS / "fotos_trocadas.txt"
     if arq_trocadas.exists():
@@ -586,10 +606,12 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
             continue
         # sem estoque na matriz: sobe como ESGOTADO se vendeu no período da Curva ABC; senão fica de fora
         esgotado = r["qtd"] <= 0
-        if esgotado and vendas is None:
+        if cod in esgotados_mao:
+            esgotado = True   # marcado na mão: fica no site como esgotado, mesmo sem venda no período
+        elif esgotado and vendas is None:
             contagem["sem estoque na matriz"] += 1
             continue
-        if esgotado and not vendas.get(cod):
+        elif esgotado and not vendas.get(cod):
             contagem[sem_venda] += 1
             continue
         vista, prazo, oferta = r.get("vista"), r.get("prazo"), r.get("super")
@@ -741,7 +763,7 @@ def main():
     vendas, periodo = ler_vendas()
     fotos = Fotos()
     print("Montando o catálogo e convertendo fotos novas (a primeira vez demora)...")
-    catalogo, detalhes, contagem, estatistica = montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas, periodo)
+    catalogo, detalhes, contagem, estatistica = montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas, periodo, data_hora)
     gravar(catalogo, detalhes, data_hora, contagem, fotos, estatistica)
 
 

@@ -1,0 +1,6 @@
+# Produtos que acabaram depois do último relatório de preços.
+# Formato:  código = data em que acabou (dd/mm/aaaa)     (# comenta)
+# O produto fica no site como ESGOTADO até chegar um relatório de preços mais novo que essa data;
+# a partir daí o estoque do relatório volta a valer e o script avisa que a linha pode ser apagada.
+1006463 = 13/11/2026  # Kit Porta Açomad 60mm 2ª Linha Mogno 215x75 Esq
+1011577 = 13/11/2026  # Porta Social Postigo 2ª Linha Br 80 Esq Top
