@@ -537,8 +537,8 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
                 excluir.add(linha)
 
     # fotos trocadas na mão: ferramentas/fotos_trocadas.txt ("908 = massa-sutil.png"), vale mais que o cadastro
-    # esgotados na mão: ferramentas/esgotados.txt ("1006463 = 13/11/2026"). Vale até chegar um relatório
-    # de preços MAIS NOVO que a data da linha; daí em diante o estoque do relatório volta a mandar.
+    # esgotados na mão: ferramentas/esgotados.txt ("1006463 = 13/11/2026"). Vale enquanto a linha existir,
+    # mesmo que o relatório ainda mostre estoque. Quando o relatório também zerar, o script avisa que pode apagar.
     esgotados_mao = {}
     arq_esg = PASTA_FERRAMENTAS / "esgotados.txt"
     if arq_esg.exists():
@@ -552,9 +552,6 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
             except ValueError:
                 aviso(f"esgotados.txt: data inválida na linha do {cod} (use dd/mm/aaaa)")
                 dia = None
-            if dia and data_relatorio.date() > dia:
-                aviso(f"esgotados.txt: {cod} já tem relatório mais novo ({data_relatorio:%d/%m}); a linha pode ser apagada")
-                continue
             esgotados_mao[cod] = dia
 
     trocadas = {}
@@ -607,6 +604,8 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
         # sem estoque na matriz: sobe como ESGOTADO se vendeu no período da Curva ABC; senão fica de fora
         esgotado = r["qtd"] <= 0
         if cod in esgotados_mao:
+            if esgotado:
+                aviso(f"esgotados.txt: o relatório já mostra o {cod} sem estoque; a linha pode ser apagada")
             esgotado = True   # marcado na mão: fica no site como esgotado, mesmo sem venda no período
         elif esgotado and vendas is None:
             contagem["sem estoque na matriz"] += 1
