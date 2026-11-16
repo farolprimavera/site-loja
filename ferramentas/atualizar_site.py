@@ -369,10 +369,17 @@ class Fotos:
     GRANDE, PEQUENA, QUALIDADE = 800, 300, 78
 
     def __init__(self):
-        # Onde estão as fotos originais: entrada/fotos, ou o caminho escrito em ferramentas/pasta_fotos.txt
-        # (ex.: C:\Users\farol.adm\Documents\David\imagens) — assim não precisa copiar de novo.
+        # Onde estão as fotos originais, nesta ordem:
+        #   1. a variável de ambiente PASTA_FOTOS (o Painel Integrador usa esta no servidor);
+        #   2. o caminho escrito em ferramentas/pasta_fotos.txt (ex.: C:\Users\farol.adm\Documents\David\imagens);
+        #   3. entrada/fotos.
         cfg = PASTA_FERRAMENTAS / "pasta_fotos.txt"
-        self.origem = Path(cfg.read_text(encoding="utf-8").strip()) if cfg.exists() else ENTRADA / "fotos"
+        if os.environ.get("PASTA_FOTOS"):
+            self.origem = Path(os.environ["PASTA_FOTOS"])
+        elif cfg.exists():
+            self.origem = Path(cfg.read_text(encoding="utf-8").strip())
+        else:
+            self.origem = ENTRADA / "fotos"
         self.indice = {}          # nome em minúsculas -> caminho
         self.por_codigo = {}      # código -> [(n, data, caminho)] das fotos no padrão código_n_data
         if self.origem.exists():
