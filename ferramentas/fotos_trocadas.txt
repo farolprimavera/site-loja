@@ -31,3 +31,4 @@
 11236 = 11236_0_20260705203124.jpg, 11236_2_20260703170417.jpg  # Galao Coral Coralar + Desempenho Azul Arpoador: cartela repetida
 1009393 = 1009393_0_20260706030608.jpg  # Porta Cantareira Branca 210X70: tirar a 2ª foto
 1008964 = valvula-7-8-n2-curta.png  # Valvula 7/8 Pia/lavatorio N2 Amanco: tirar a 2ª foto
+1003574 = 1003574_0_20260706142730.jpg, p1003574-20261116-173200-1.png  # GALAO IQUINE VERNIZ COPAL BRILHANTEIQUINE — pelo painel (David, 16/11/2026)
