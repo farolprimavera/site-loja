@@ -294,7 +294,11 @@ def ler_automec():
     extras = sorted(f for f in ENTRADA.glob("cadastro-*.xls*") if not f.name.startswith("~$"))
     dados = {}
     for arq in [principal, *extras]:
-        dados.update(_ler_um_cadastro(arq))
+        for cod, novo in _ler_um_cadastro(arq).items():
+            # exportação parcial pode vir sem algumas colunas (sem grupo, sem unidade...):
+            # campo vazio no arquivo menor não apaga o que o cadastro principal já tem
+            atual = dados.setdefault(cod, {})
+            atual.update({k: v for k, v in novo.items() if v or k not in atual})
     print(f"  cadastro Automec: {len(dados)} produtos ({', '.join(a.name for a in [principal, *extras])})")
     return dados
 
@@ -307,9 +311,9 @@ def _ler_um_cadastro(arq):
     dados = {}
     for _, r in df.iterrows():
         cod = re.sub(r"\.0$", "", r["Código"].strip())
-        foto = re.split(r"[\\/]", r["Caminho foto"].strip())[-1]   # só o nome do arquivo
+        foto = re.split(r"[\\/]", r.get("Caminho foto", "").strip())[-1]   # só o nome do arquivo
         dados[cod] = {
-            "un": r["Unid. Estoque"].strip().upper(), "foto": foto,
+            "un": r.get("Unid. Estoque", "").strip().upper(), "foto": foto,
             "nome": r.get("Produto", "").strip(), "grupo": r.get("Grupo", "").strip(),
             "sub": r.get("Sub-grupo", "").strip(), "ean": re.sub(r"\.0$", "", r.get("Código de Barras", "").strip()),
             "obs": r.get("Observação", "").replace("_x000D_", "").strip(), "marca": r.get("Fabricante", "").strip(),
@@ -640,6 +644,8 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
             bf = None
 
         marca = r["Marca"].strip()
+        if marca.upper() in ("", "DIVERSOS"):
+            marca = automec.get(cod, {}).get("marca", "")   # Marketplace sem marca: usa o Fabricante do Automec
         desc = r["Informacoes do produto"]
         piso = dados_piso(desc) if grupo.strip().upper().startswith("PISOS") else {}
         if grupo.strip().upper().startswith("PISOS") and not piso:
