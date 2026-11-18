@@ -1,0 +1,61 @@
+{
+  "banners": [
+    {
+      "imagem": "imagens/banners/black-friday.webp",
+      "texto": "Black Friday Farol da Primavera: em até 3x sem juros. Ver ofertas",
+      "link": "blackfriday.html",
+      "campanha": "blackfriday"
+    },
+    {
+      "imagem": "imagens/banners/sua-obra-comeca-aqui.webp",
+      "texto": "Sua obra começa aqui: tudo para construir e reformar na Farol da Primavera",
+      "link": "ofertas.html",
+      "campanha": ""
+    }
+  ],
+  "galeria": [
+    {
+      "foto": "imagens/loja/salao-pisos.webp",
+      "grande": "imagens/loja/salao-pisos.webp",
+      "legenda": "Showroom de pisos e revestimentos",
+      "texto": "Showroom de pisos e revestimentos"
+    },
+    {
+      "foto": "imagens/loja/tintometrico.webp",
+      "grande": "imagens/loja/tintometrico-g.webp",
+      "legenda": "Tintométrico: sua cor na hora",
+      "texto": "Máquina tintométrica"
+    },
+    {
+      "foto": "imagens/loja/mel.webp",
+      "grande": "imagens/loja/mel.webp",
+      "legenda": "Mel, nossa fiscal de tintas",
+      "texto": "Mel, a gata da loja"
+    }
+  ],
+  "catalogos": [
+    {
+      "link": "https://farolprimavera.github.io/guia-de-impermeabilizacao/",
+      "nome": "Guia de impermeabilização",
+      "descricao": "Descubra o produto certo para cada caso",
+      "icone": "imagens/catalogos/impermeabilizacao.png"
+    },
+    {
+      "link": "https://farolprimavera.github.io/site-tintas/",
+      "nome": "Simulador de tintas",
+      "descricao": "Veja a cor na parede antes de comprar",
+      "icone": "imagens/catalogos/tintas.png"
+    },
+    {
+      "link": "https://farolprimavera.github.io/site-pisos/",
+      "nome": "Simulador de pisos",
+      "descricao": "Troque o piso do ambiente e compare",
+      "icone": "imagens/catalogos/pisos.png"
+    }
+  ],
+  "redes": [
+    { "nome": "Instagram", "link": "https://www.instagram.com/faroldaprimavera/", "usuario": "@faroldaprimavera" },
+    { "nome": "Facebook", "link": "https://www.facebook.com/FarolDaPrimavera/", "usuario": "FarolDaPrimavera" },
+    { "nome": "TikTok", "link": "https://www.tiktok.com/@faroldaprimavera", "usuario": "@faroldaprimavera" }
+  ]
+}

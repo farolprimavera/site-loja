@@ -2,10 +2,6 @@
 .carrossel { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 16 / 9; max-width: 100%; background: var(--line); }
 .carrossel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .6s; }
 .carrossel img:not(.ativo) { opacity: 0; pointer-events: none; }
-/* área clicável só em cima do botão "Confira nossas ofertas" do banner principal */
-.banner-botao { position: absolute; left: 5%; top: 76%; width: 34.2%; height: 8.6%; border-radius: 999px; z-index: 1; }
-.banner-botao:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
-.banner-botao[hidden] { display: none; }
 .carrossel.um-so .carrossel-seta, .carrossel.um-so .carrossel-pontos { display: none; }
 .carrossel-seta { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 999px; border: 0; background: rgba(255, 255, 255, .9); color: #17201b; cursor: pointer; font-size: 24px; font-weight: 700; box-shadow: 0 2px 8px rgba(0, 0, 0, .2); }
 .carrossel-seta.esq { left: 12px; } .carrossel-seta.dir { right: 12px; }

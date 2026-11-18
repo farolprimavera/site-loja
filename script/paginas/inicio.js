@@ -2,6 +2,7 @@
 
 import { $, esc } from '../util.js';
 import { carregarCatalogo, contarCategorias } from '../catalogo.js';
+import { carregarConteudo } from '../conteudo.js';
 import { cartao, icone, ligarBotoesAdicionar } from '../componentes.js';
 
 // Vitrines da página inicial: códigos escolhidos a dedo (fotos bonitas), na ordem em que aparecem.
@@ -16,12 +17,17 @@ const VITRINES = [
 ];
 const POR_VITRINE = 8;
 
-const { produtos, porCodigo, blackAtiva } = await carregarCatalogo();
+const [{ produtos, porCodigo, blackAtiva }, conteudo] = await Promise.all([carregarCatalogo(), carregarConteudo()]);
 
 // ---------- carrossel de banners ----------
 const carrossel = $('#carrossel');
-// o banner da Black Friday sai sozinho quando a campanha termina
-if (!blackAtiva) carrossel.querySelector('[data-black]')?.remove();
+// o banner de campanha (Black Friday) sai sozinho quando a campanha termina
+const banners = conteudo.banners.filter((b) => b.campanha !== 'blackfriday' || blackAtiva);
+carrossel.insertAdjacentHTML('afterbegin', banners.map((b, i) => {
+  const img = `<img${i === 0 ? ' class="ativo" fetchpriority="high"' : ''} src="${esc(b.imagem)}" alt="${esc(b.texto)}">`;
+  return b.link ? `<a href="${esc(b.link)}">${img}</a>` : img;
+}).join(''));
+carrossel.hidden = banners.length === 0;
 const imagens = [...carrossel.querySelectorAll('img')];
 const pontos = $('#carrossel-pontos');
 carrossel.classList.toggle('um-so', imagens.length < 2);
@@ -31,8 +37,6 @@ function mostrar(i) {
   atual = (i + imagens.length) % imagens.length;
   imagens.forEach((img, k) => img.classList.toggle('ativo', k === atual));
   [...pontos.children].forEach((b, k) => b.classList.toggle('ativo', k === atual));
-  // o botão "Confira nossas ofertas" só fica clicável quando o banner dele está na tela
-  carrossel.querySelectorAll('[data-banner]').forEach((a) => { a.hidden = imagens[atual].id !== a.dataset.banner; });
 }
 carrossel.addEventListener('click', (e) => {
   const b = e.target.closest('button');
@@ -40,7 +44,7 @@ carrossel.addEventListener('click', (e) => {
   if (b.dataset.passo) mostrar(atual + Number(b.dataset.passo));
   else mostrar([...pontos.children].indexOf(b));
 });
-mostrar(0); // a Black Friday abre primeiro; quando ela sai, o banner principal volta a ser o primeiro
+if (imagens.length) mostrar(0); // o primeiro da lista abre primeiro (a Black Friday, enquanto durar)
 if (imagens.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => mostrar(atual + 1), 6000);
 
 // ---------- produtos ----------

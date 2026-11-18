@@ -1,4 +1,11 @@
-// sobre.html — tocar numa foto abre ela maior (igual ao site de tintas)
+// sobre.html — fotos da loja ("Venha nos visitar"); tocar numa foto abre ela maior (igual ao site de tintas)
+
+import { esc } from '../util.js';
+import { carregarConteudo } from '../conteudo.js';
+
+const { galeria } = await carregarConteudo();
+document.getElementById('galeria').innerHTML = galeria.map((f) => `<figure><button type="button" class="foto-zoom" data-grande="${esc(f.grande || f.foto)}" data-legenda="${esc(f.legenda)}" aria-label="Ampliar foto: ${esc(f.legenda)}"><img src="${esc(f.foto)}" alt="${esc(f.texto)}" loading="lazy"></button><figcaption>${esc(f.legenda)}</figcaption></figure>`).join('');
+document.getElementById('visite').hidden = galeria.length === 0;
 
 const dlg = document.getElementById('foto-ampliada');
 const img = document.getElementById('foto-ampliada-img');

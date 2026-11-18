@@ -1,20 +1,17 @@
 // app.js — roda em TODAS as páginas: cabeçalho, menu, rodapé, tema e contador do carrinho
 // Cada página HTML tem <body data-pagina="inicio|produtos|ofertas|produto|carrinho|contato|sobre">
 
-import { $, ler, salvar } from './util.js';
+import { $, esc, ler, salvar } from './util.js';
 import { totalItens } from './carrinho.js';
 import { link } from './whatsapp.js';
 import { icone } from './componentes.js';
 import { carregarCatalogo } from './catalogo.js';
+import { carregarConteudo } from './conteudo.js';
 
 const pagina = document.body.dataset.pagina;
 
-// Catálogos interativos: os outros sites da loja, abertos pelo item do menu
-const CATALOGOS = [
-  ['https://farolprimavera.github.io/guia-de-impermeabilizacao/', 'Guia de impermeabilização', 'Descubra o produto certo para cada caso', 'imagens/catalogos/impermeabilizacao.png'],
-  ['https://farolprimavera.github.io/site-tintas/', 'Simulador de tintas', 'Veja a cor na parede antes de comprar', 'imagens/catalogos/tintas.png'],
-  ['https://farolprimavera.github.io/site-pisos/', 'Simulador de pisos', 'Troque o piso do ambiente e compare', 'imagens/catalogos/pisos.png'],
-];
+// Catálogos interativos (os outros sites da loja) e redes sociais vêm de dados/conteudo.json,
+// que o Painel Integrador edita: o cabeçalho e o rodapé nascem sem eles e são completados logo depois.
 
 const MENU = [
   ['index.html', 'inicio', 'Início'],
@@ -44,7 +41,7 @@ function cabecalho() {
     <nav class="menu" aria-label="Menu principal"><div class="largura lado">
       <a href="blackfriday.html" class="menu-black" id="menu-black" hidden${pagina === 'blackfriday' ? ' aria-current="page"' : ''}>Black Friday</a>
       ${MENU.map(([href, id, nome]) => `<a href="${href}"${id === 'ofertas' ? ' class="menu-oferta"' : ''}${id === atual ? ' aria-current="page"' : ''}>${nome}</a>`).join('')}
-      <button type="button" class="menu-catalogos" id="btn-catalogos" aria-expanded="false" aria-controls="painel-catalogos">Catálogos interativos<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button type="button" class="menu-catalogos" id="btn-catalogos" aria-expanded="false" aria-controls="painel-catalogos" hidden>Catálogos interativos<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
     </div></nav>
     <div class="gaveta" id="gaveta" hidden>
       <div class="gaveta-fundo" data-fechar></div>
@@ -53,14 +50,11 @@ function cabecalho() {
           <button type="button" class="gaveta-fechar" data-fechar aria-label="Fechar menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
         <a href="blackfriday.html" class="gaveta-black" id="gaveta-black" hidden>Black Friday</a>
         ${MENU.map(([href, id, nome]) => `<a href="${href}" class="gaveta-link${id === 'ofertas' ? ' oferta' : ''}"${id === atual ? ' aria-current="page"' : ''}>${nome}</a>`).join('')}
-        <span class="gaveta-secao">Catálogos interativos</span>
-        ${CATALOGOS.map(([href, nome, desc, icone]) => `<a href="${href}" class="gaveta-catalogo" target="_blank" rel="noopener"><img src="${icone}" alt="" width="36" height="36"><span><strong>${nome}</strong><span class="nota">${desc}</span></span></a>`).join('')}
+        <span class="gaveta-secao" id="gaveta-catalogos" hidden>Catálogos interativos</span>
         <a class="btn btn-whats gaveta-whats" href="${link()}" target="_blank" rel="noopener">Falar com o televendas</a>
       </nav>
     </div>
-    <div class="menu-painel" id="painel-catalogos" hidden>
-      ${CATALOGOS.map(([href, nome, desc, icone]) => `<a href="${href}" target="_blank" rel="noopener"><img class="icone-catalogo" src="${icone}" alt="" width="40" height="40"><span><strong>${nome}</strong><span class="nota">${desc}</span></span></a>`).join('')}
-    </div>`;
+    <div class="menu-painel" id="painel-catalogos" hidden></div>`;
 }
 
 function rodape() {
@@ -68,7 +62,7 @@ function rodape() {
       <div><strong style="font-size:18px">Farol da Primavera</strong><p>Materiais de construção, reforma e acabamento no Jardim Primavera desde 1979.</p></div>
       <div><strong>Onde estamos</strong><p>Av. Jornalista Moacir Padilha, 351<br>Jardim Primavera, Duque de Caxias / RJ<br>CEP 25215-250</p></div>
       <div><strong>Atendimento</strong><p>Segunda a sábado, 8h às 18h</p><p><a class="btn btn-whats" style="min-height:42px" href="${link()}" target="_blank" rel="noopener">Televendas (21) 2776-3391</a></p></div>
-      <div><strong>Redes sociais</strong><p class="redes"><a href="https://www.instagram.com/faroldaprimavera/" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/FarolDaPrimavera/" target="_blank" rel="noopener">Facebook</a><a href="https://www.tiktok.com/@faroldaprimavera" target="_blank" rel="noopener">TikTok</a></p></div>
+      <div id="rodape-redes" hidden><strong>Redes sociais</strong><p class="redes"></p></div>
     </div>
     <div class="rodape-base"><div class="largura lado">Preços e estoque atualizados diariamente e sujeitos a confirmação do televendas.</div></div></footer>
     <a class="whats-flutuante" href="${link()}" target="_blank" rel="noopener" aria-label="Falar com o televendas pelo WhatsApp">${icone('whats', 32)}</a>`;
@@ -77,6 +71,26 @@ function rodape() {
 // monta cabeçalho e rodapé
 document.body.insertAdjacentHTML('afterbegin', cabecalho());
 document.body.insertAdjacentHTML('beforeend', rodape());
+
+// catálogos interativos e redes sociais (dados/conteudo.json)
+carregarConteudo().then(({ catalogos, redes }) => {
+  const link = (c) => `href="${esc(c.link)}" target="_blank" rel="noopener"`;
+  if (catalogos.length) {
+    $('#painel-catalogos').innerHTML = catalogos.map((c) => `<a ${link(c)}><img class="icone-catalogo" src="${esc(c.icone)}" alt="" width="40" height="40"><span><strong>${esc(c.nome)}</strong><span class="nota">${esc(c.descricao)}</span></span></a>`).join('');
+    $('#gaveta-catalogos').insertAdjacentHTML('afterend', catalogos.map((c) => `<a ${link(c)} class="gaveta-catalogo"><img src="${esc(c.icone)}" alt="" width="36" height="36"><span><strong>${esc(c.nome)}</strong><span class="nota">${esc(c.descricao)}</span></span></a>`).join(''));
+    $('#btn-catalogos').hidden = false;
+    $('#gaveta-catalogos').hidden = false;
+  }
+  if (redes.length) {
+    $('#rodape-redes p').innerHTML = redes.map((r) => `<a ${link(r)}>${esc(r.nome)}</a>`).join('');
+    $('#rodape-redes').hidden = false;
+    const grade = $('#redes-grade'); // só existe na página de contato
+    if (grade) {
+      grade.innerHTML = redes.map((r) => `<a class="rede" ${link(r)}><strong>${esc(r.nome)}</strong><span class="nota">${esc(r.usuario)}</span></a>`).join('');
+      $('#siga').hidden = false;
+    }
+  }
+});
 
 // menu "Catálogos interativos": o painel fica fora do menu (que rola de lado no celular) e abre embaixo do botão
 const btnCat = $('#btn-catalogos'), painel = $('#painel-catalogos');
