@@ -64,10 +64,24 @@ if (!p) {
 
   // linhas "Rótulo: valor" ou "Rótulo - valor" ficam com o rótulo em negrito
   const linha = (t) => {
-    const m = t.match(/^([A-Za-zÀ-ú][A-Za-zÀ-ú ]{1,24}?) - (.+)$/) || t.match(/^([A-Za-zÀ-ú][A-Za-zÀ-ú ]{1,24}): (.+)$/);
+    const m = t.match(/^([A-Za-zÀ-ú][A-Za-zÀ-ú ]{1,24}?) - (.+)$/) || t.match(/^([A-Za-zÀ-ú][A-Za-zÀ-ú -]{1,24}): (.+)$/);
     return m ? `<li><strong>${esc(m[1])}:</strong> ${esc(m[2])}</li>` : `<li>${esc(t)}</li>`;
   };
   const descricao = (d.descricao || []).filter((t) => !p.fator || !/^EXTRA\s*-/i.test(t));
+  // descrição com "> Título" e "- item" (escrita à mão em ferramentas/complementos): subtítulos, parágrafos e listas
+  const estruturada = descricao.some((t) => /^[>-]\s/.test(t));
+  const montarDescricao = () => {
+    if (!estruturada) return `<ul>${descricao.map(linha).join('')}</ul>`;
+    let html = '', lista = [];
+    const fechar = () => { if (lista.length) html += `<ul>${lista.join('')}</ul>`; lista = []; };
+    for (const t of descricao) {
+      if (t.startsWith('- ')) { lista.push(linha(t.slice(2))); continue; }
+      fechar();
+      html += t.startsWith('> ') ? `<h3>${esc(t.slice(2))}</h3>` : `<p>${esc(t)}</p>`;
+    }
+    fechar();
+    return html;
+  };
   const parecidos = produtos.filter((x) => x.grupo === p.grupo && x.sub === p.sub && x.cod !== p.cod).slice(0, 4);
   const duvida = `Olá! Vim pelo site e tenho uma dúvida sobre o produto ${p.cod} — ${p.nome}.`;
 
@@ -96,7 +110,7 @@ if (!p) {
       </div>
     </div>
     <div class="produto-detalhes">
-      <section class="bloco descricao"><h2>Descrição</h2>${descricao.length ? `<ul>${descricao.map(linha).join('')}</ul>` : '<p class="nota" style="margin:0">Este produto ainda não tem descrição. Fale com o televendas para tirar dúvidas.</p>'}</section>
+      <section class="bloco descricao"><h2>Descrição</h2>${descricao.length ? montarDescricao() : '<p class="nota" style="margin:0">Este produto ainda não tem descrição. Fale com o televendas para tirar dúvidas.</p>'}</section>
       <section class="bloco ficha"><h2>Ficha técnica</h2><dl>${ficha.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl></section>
     </div>
     ${parecidos.length ? `<section class="secao"><div class="secao-titulo"><h2>Mais em ${esc(p.sub)}</h2><a href="produtos.html?grupo=${encodeURIComponent(p.grupo)}&sub=${encodeURIComponent(p.sub)}">Ver todos →</a></div><div class="grade">${parecidos.map(cartao).join('')}</div></section>` : ''}`;

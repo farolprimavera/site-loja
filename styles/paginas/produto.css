@@ -38,3 +38,10 @@
 .aviso-esgotado strong { font-size: 17px; }
 .aviso-esgotado .btn { align-self: flex-start; }
 .preco-normal strong { color: inherit; }
+
+/* descrição escrita à mão (subtítulos e parágrafos) */
+.descricao h3 { margin: 18px 0 8px; font-size: 16px; font-weight: 800; }
+.descricao h2 + h3 { margin-top: 0; }
+.descricao p { margin: 0 0 10px; line-height: 1.6; }
+.descricao ul + h3, .descricao p + h3 { margin-top: 18px; }
+.descricao ul + p { margin-top: 10px; }

@@ -480,7 +480,7 @@ class Fotos:
 # ---------------------------------------------------------------- 3. descrição e pisos
 RX_FATOR = re.compile(r"(?:CX\.?\s*(?:COM\s*)?|Caixa\s*:?\s*|m2\s*/\s*Caixa\s*:?\s*)(\d+(?:[.,]\d+)?)\s*m", re.I)
 RX_PECAS = re.compile(r"(\d+)\s*p[çc]", re.I)
-RX_PEI = re.compile(r"PEI\s*[-:]?\s*(\d|L[A-Z])\b", re.I)
+RX_PEI = re.compile(r"PEI\s*[-:]?\s*(\d|L[A-Z]|[A-E])\b", re.I)
 RX_JUNTA = re.compile(r"JUNTA\s*:?\s*(\d+(?:[.,]\d+)?)\s*mm", re.I)
 RX_QUALIDADE = re.compile(r"^\s*(EXTRA|COMERCIAL|A|B|C)\s*-", re.I)
 
@@ -491,6 +491,58 @@ def linhas_descricao(texto):
     if linhas and re.fullmatch(r"descri[cç][aã]o:?", linhas[0], re.I):
         linhas.pop(0)
     return [re.sub(r";$", ".", l) for l in linhas]
+
+
+def ler_complementos():
+    """
+    ferramentas/complementos/<código>.txt: informações que faltam no sistema, escritas à mão.
+    Cabeçalho com "campo: valor" (grupo, sub-grupo, código de barras, unidade, marca),
+    depois uma linha só com --- e a descrição. Na descrição:
+        > Título        vira um subtítulo
+        - item          vira um item de lista
+    Qualquer campo que estiver no arquivo vale mais que o do sistema.
+    """
+    pasta = PASTA_FERRAMENTAS / "complementos"
+    chaves = {"grupo": "grupo", "sub-grupo": "sub", "subgrupo": "sub", "código de barras": "ean", "codigo de barras": "ean",
+              "ean": "ean", "unidade": "un", "marca": "marca"}
+    comp = {}
+    for arq in sorted(pasta.glob("*.txt")) if pasta.exists() else []:
+        cod = arq.stem.strip()
+        linhas = arq.read_text(encoding="utf-8-sig").replace("\r", "").split("\n")
+        corte = next((i for i, l in enumerate(linhas) if l.strip() == "---"), len(linhas))
+        desc = "\n".join(linhas[corte + 1:])
+        d = {"manual": True}
+        for linha in linhas[:corte]:
+            campo, sep, valor = linha.partition(":")
+            if sep and campo.strip().lower() in chaves and valor.strip():
+                d[chaves[campo.strip().lower()]] = valor.strip()
+        if desc.strip():
+            d["descricao"] = desc
+        comp[cod] = d
+    if comp:
+        print(f"  complementos: {len(comp)} produtos ({', '.join(comp)})")
+    return comp
+
+
+def descricao_piso(nome, marca, piso):
+    """Piso que só tem a linha 'EXTRA - CX ...': monta uma descrição com os dados da caixa."""
+    nome = re.sub(r"(\d)X(\d)", r"\1x\2", nome)
+    frase = nome + (f" {marca}" if marca and marca.lower() not in nome.lower() else "")
+    if piso.get("qualidade"):
+        frase += f", qualidade {piso['qualidade'].capitalize()}"
+    caixa = f"{piso['fator']:.2f}".replace(".", ",") + " m²"
+    pecas = int(piso["pecas"]) if str(piso.get("pecas", "")).isdigit() else None
+    frase += f", vendido em caixa fechada com {caixa}" + (f" ({pecas} peças)." if pecas else ".")
+    linhas = [frase]
+    extra = []
+    if piso.get("pei"):
+        extra.append(f"PEI {piso['pei']}.")
+    if piso.get("junta"):
+        extra.append(f"Junta recomendada de {piso['junta']} mm.")
+    if extra:
+        linhas.append(" ".join(extra))
+    linhas.append("Use a calculadora de m² para saber quantas caixas você precisa.")
+    return linhas
 
 
 def dados_piso(texto):
@@ -644,9 +696,9 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
             bf = None
 
         marca = r["Marca"].strip()
-        if marca.upper() in ("", "DIVERSOS"):
-            marca = automec.get(cod, {}).get("marca", "")   # Marketplace sem marca: usa o Fabricante do Automec
-        desc = r["Informacoes do produto"]
+        if marca.upper() in ("", "DIVERSOS") or (a.get("manual") and a.get("marca")):
+            marca = a.get("marca", "") or marca   # sem marca no Marketplace (ou complemento à mão): usa a do Automec
+        desc = a.get("descricao") or r["Informacoes do produto"]
         piso = dados_piso(desc) if grupo.strip().upper().startswith("PISOS") else {}
         if grupo.strip().upper().startswith("PISOS") and not piso:
             aviso(f"piso sem m² por caixa na descrição (vende por unidade): {cod} {r['Nome']}")
@@ -660,7 +712,7 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
 
         item = {
             "cod": cod,
-            "ean": r["EAN"].strip() or None,
+            "ean": (a.get("ean") if a.get("manual") else None) or r["EAN"].strip() or a.get("ean") or None,
             "nome": titulo(nome_site),
             "marca": None if marca.upper() in ("", "DIVERSOS") else titulo(marca),
             "grupo": GRUPOS.get(grupo.strip().upper(), titulo(grupo)) or "Outros",
@@ -693,7 +745,10 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
             "lote": lote or None,
             "local": local or None,
         }.items() if v}
-        det = {"descricao": linhas_descricao(desc), "ficha": ficha}
+        linhas = linhas_descricao(desc)
+        if piso and not [l for l in linhas if not RX_QUALIDADE.match(l) and not RX_FATOR.search(l)]:
+            linhas += descricao_piso(item["nome"], item.get("marca"), piso)
+        det = {"descricao": linhas, "ficha": ficha}
         if len(fotos_prod) > 1:
             det["galeria"] = fotos_prod
         detalhes.setdefault(cod[-2:].zfill(2), {})[cod] = det
@@ -770,6 +825,10 @@ def main():
     cadastro = ler_cadastro()
     precos, data_hora = ler_precos()
     automec = ler_automec()
+    complementos = ler_complementos()
+    for cod, c in complementos.items():   # o que foi escrito à mão vale mais que o cadastro
+        a = automec.setdefault(cod, {"un": "", "foto": "", "nome": "", "grupo": "", "sub": "", "ean": "", "obs": "", "marca": ""})
+        a.update(c)
     ret_vista, ret_prazo = ler_ret("vista-ret"), ler_ret("prazo-ret")
     black = ler_black(datetime.now())
     vendas, periodo = ler_vendas()
