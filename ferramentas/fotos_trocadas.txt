@@ -32,3 +32,4 @@
 1009393 = 1009393_0_20260706030608.jpg  # Porta Cantareira Branca 210X70: tirar a 2ª foto
 1008964 = valvula-7-8-n2-curta.png  # Valvula 7/8 Pia/lavatorio N2 Amanco: tirar a 2ª foto
 1003574 = 1003574_0_20260706142730.jpg, p1003574-20261116-173200-1.png  # GALAO IQUINE VERNIZ COPAL BRILHANTEIQUINE — pelo painel (David, 16/11/2026)
+4754 = 4754_0_20260706224039.jpg, p4754-20261119-153601-1.webp  # CIMENTO VOTORAN CPIII 50KG. — pelo painel (David, 19/11/2026)
