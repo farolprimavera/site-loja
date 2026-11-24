@@ -50,7 +50,7 @@ export function cartao(p) {
   const sem = esgotado(p);
   return `<article class="card${p.bf ? ' black' : p.super ? ' oferta' : ''}${sem ? ' esgotado' : ''}">
     <a class="card-link" href="produto.html?cod=${p.cod}">
-      <div class="foto">${p.foto ? imgProduto(fotoPequena(p.foto), p.nome) : semFoto()}
+      <div class="foto${p.fator ? ' foto-piso' : ''}">${p.foto ? imgProduto(fotoPequena(p.foto), p.nome) : semFoto()}
         ${sem ? '<span class="selo selo-esgotado">ESGOTADO</span>' : p.bf ? '<span class="selo selo-black">BLACK FRIDAY</span>' : p.super ? '<span class="selo selo-oferta">SUPER OFERTA</span>' : ''}
         ${desc ? `<span class="selo selo-desconto${p.bf ? ' black' : ''}">-${desc}%</span>` : ''}
         ${p.fator ? `<span class="selo selo-caixa">cx ${fmt(p.fator)} m²</span>` : ''}</div>

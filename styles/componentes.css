@@ -21,6 +21,11 @@
 .foto { position: relative; aspect-ratio: 4 / 3; max-width: 100%; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--line); }
 .foto img { width: 86%; height: 86%; object-fit: contain; }
 .foto .sem-foto { color: #c5cfc9; }
+/* piso e revestimento: fundo cinza claro e a foto vira uma "peça" com borda e sombra,
+   para piso branco ou claro não sumir no fundo */
+.foto-piso { background: #eef1ef; }
+.foto-piso img { width: auto; height: auto; max-width: 78%; max-height: 78%; border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .10), 0 6px 16px rgba(0, 0, 0, .16), 0 1px 3px rgba(0, 0, 0, .12); }
 .selo { position: absolute; top: 8px; left: 8px; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; }
 .selo-oferta { background: var(--vermelho-forte); color: #fff; }
 .selo-caixa { background: var(--verde-fundo); color: var(--verde); left: auto; right: 8px; }

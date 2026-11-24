@@ -91,7 +91,7 @@ if (!p) {
       <a href="produtos.html?grupo=${encodeURIComponent(p.grupo)}&sub=${encodeURIComponent(p.sub)}">${esc(p.sub)}</a></nav>
     <div class="produto">
       <div class="produto-fotos">
-        <div class="foto" id="foto-principal">${fotos.length ? imgProduto(fotoGrande(fotos[0]), p.nome, false) : semFoto()}
+        <div class="foto${p.fator ? ' foto-piso' : ''}" id="foto-principal">${fotos.length ? imgProduto(fotoGrande(fotos[0]), p.nome, false) : semFoto()}
           ${p.bf ? '<span class="selo selo-black">BLACK FRIDAY</span>' : p.super ? '<span class="selo selo-oferta">SUPER OFERTA</span>' : ''}</div>
         ${fotos.length > 1 ? `<div class="miniaturas">${fotos.map((n, i) => `<button type="button" data-foto="${n}" aria-pressed="${i === 0}" aria-label="Foto ${i + 1}"><img src="${fotoPequena(n)}" alt=""></button>`).join('')}</div>` : ''}
       </div>
