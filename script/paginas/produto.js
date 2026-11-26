@@ -23,6 +23,7 @@ if (!p) {
   const d = await carregarDetalhe(cod);
   const f = d.ficha || {};
   const fotos = d.galeria || (p.foto ? [p.foto] : []);
+  const maisFaces = d.faces || [];   // pisos: as faces da fabricante que não cabem na galeria
   const un = p.un ? `/${p.un}` : '';
   const dataPreco = new Date(atualizado).toLocaleDateString('pt-BR');
   document.title = `${p.nome} · Farol da Primavera`;
@@ -60,7 +61,7 @@ if (!p) {
     ['Código do produto', p.fator ? null : p.cod], ['Código de barras (EAN)', p.ean], ['Marca', p.marca], ['Categoria', `${p.grupo} › ${p.sub}`],
     ['Vendido por', p.fator ? 'caixa' : p.un], ['Peso', f.peso_kg ? `${f.peso_kg.toLocaleString('pt-BR')} kg` : null],
     ['m² por caixa', p.fator ? `${fmt(p.fator)} m²` : null], ['Peças por caixa', f.pecas_caixa], ['PEI', f.pei],
-    ['Junta', f.junta_mm ? `${f.junta_mm} mm` : null],
+    ['Junta', f.junta_mm ? `${f.junta_mm} mm` : null], ['Faces', f.faces],
   ].filter((x) => x[1]);
 
   // linhas "Rótulo: valor" ou "Rótulo - valor" ficam com o rótulo em negrito
@@ -94,7 +95,9 @@ if (!p) {
       <div class="produto-fotos">
         <div class="foto${p.fator ? ' foto-piso' : ''}" id="foto-principal">${fotos.length ? imgProduto(fotoGrande(fotos[0]), p.nome, false) : semFoto()}
           ${p.bf ? '<span class="selo selo-black">BLACK FRIDAY</span>' : p.super ? '<span class="selo selo-oferta">SUPER OFERTA</span>' : ''}</div>
-        ${fotos.length > 1 ? `<div class="miniaturas">${fotos.map((n, i) => `<button type="button" data-foto="${n}" aria-pressed="${i === 0}" aria-label="Foto ${i + 1}"><img src="${fotoPequena(n)}" alt=""></button>`).join('')}</div>` : ''}
+        ${fotos.length > 1 || maisFaces.length ? `<div class="miniaturas">${fotos.map((n, i) => `<button type="button" data-foto="${n}" aria-pressed="${i === 0}" aria-label="Foto ${i + 1}"><img src="${fotoPequena(n)}" alt=""></button>`).join('')}</div>` : ''}
+        ${maisFaces.length ? `<div class="mais-faces"><span class="mais-faces-titulo">Mais faces deste piso${f.faces ? ` <span class="nota">· ${f.faces} faces no total</span>` : ''}</span>
+          <div class="miniaturas">${maisFaces.map((n, i) => `<button type="button" data-foto="${n}" aria-pressed="false" aria-label="Face ${fotos.length + i + 1}"><img src="${fotoPequena(n)}" alt="" loading="lazy"></button>`).join('')}</div></div>` : ''}
       </div>
       <div class="produto-info">
         <div style="display:flex;flex-direction:column;gap:8px"><span class="marca">${esc(p.marca || '')}</span><h1>${esc(p.nome)}</h1>

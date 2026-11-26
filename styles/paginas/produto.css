@@ -8,6 +8,14 @@
 .miniaturas button { width: 72px; height: 72px; padding: 4px; border-radius: 12px; border: 2px solid var(--line); background: #fff; cursor: pointer; }
 .miniaturas button[aria-pressed="true"] { border-color: var(--verde-btn); }
 .miniaturas img { width: 100%; height: 100%; object-fit: contain; }
+.mais-faces { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.mais-faces-titulo { font-weight: 800; font-size: 15px; }
+.mais-faces-titulo .nota { font-weight: 500; }
+/* no celular as faces ficam numa fila só, de arrastar, para não empurrar o preço lá para baixo */
+@media (max-width: 640px) {
+  .mais-faces .miniaturas { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scroll-snap-type: x proximity; }
+  .mais-faces .miniaturas button { flex: 0 0 auto; scroll-snap-align: start; }
+}
 .produto-info { flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
 .produto-info h1 { font-size: 30px; font-weight: 900; }
 .caixa-preco { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 4px; font-variant-numeric: tabular-nums; }

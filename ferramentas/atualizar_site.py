@@ -18,6 +18,8 @@ REGRAS DO SITE
   - Super Oferta só vale se for MENOR que o preço à vista.
   - Códigos em ferramentas/excluir.txt nunca entram (produtos de teste etc.).
   - ferramentas/fotos_trocadas.txt troca a foto de um produto quando a do cadastro está errada.
+  - ferramentas/faces.txt (escrito pelo Painel): número de faces dos pisos e as faces que não
+    cabem na galeria, mostradas à parte na página do produto ("Mais faces").
   - Pisos: m² por caixa, peças, PEI e junta são lidos da descrição.
   - NADA de custo, fornecedor ou quantidade exata vai para o site:
     só as colunas da lista CAMPOS_PERMITIDOS chegam no JSON.
@@ -466,6 +468,19 @@ class Fotos:
             self.sem_foto.append(f"{cod} {nome_produto}")
         return nomes
 
+    def extras(self, cod, nome_produto, arquivos):
+        """Fotos à parte da galeria (as faces dos pisos que não cabem nela): todas, sem o limite de 6."""
+        nomes = []
+        for arquivo in arquivos:
+            achado = self.indice.get(arquivo.lower())
+            if not achado:
+                self.nao_achadas.append(f"{cod} {nome_produto} -> {arquivo}")
+                continue
+            nome = self.converter(achado)
+            if nome:
+                nomes.append(nome)
+        return nomes
+
     def limpar(self):
         """Apaga do site as fotos de produtos que saíram (não ficam ocupando espaço no GitHub)."""
         apagadas = 0
@@ -628,6 +643,18 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
                 cod, arquivos = (x.strip() for x in linha.split("=", 1))
                 trocadas[cod] = [a.strip() for a in arquivos.split(",") if a.strip()]
 
+    # faces dos pisos (escrito pelo Painel): ferramentas/faces.txt ("1012666 = 18 | face1.jpg, face2.jpg")
+    faces_pisos = {}
+    arq_faces = PASTA_FERRAMENTAS / "faces.txt"
+    if arq_faces.exists():
+        for linha in arq_faces.read_text(encoding="utf-8").splitlines():
+            linha = linha.split("#")[0].strip()
+            if "=" in linha:
+                cod, valor = (x.strip() for x in linha.split("=", 1))
+                numero, _, arquivos = valor.partition("|")
+                faces_pisos[cod] = (int(numero) if numero.strip().isdigit() else None,
+                                    [a.strip() for a in arquivos.split(",") if a.strip()])
+
     # produtos que estão no Automec (e no relatório de preços, ou seja, ativos) mas não no Marketplace
     no_marketplace = set(cadastro["SKU"])
     no_relatorio = set(precos["cod"])
@@ -743,6 +770,7 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
             "pecas_caixa": piso.get("pecas"),
             "pei": piso.get("pei"),
             "junta_mm": piso.get("junta"),
+            "faces": faces_pisos.get(cod, (None, []))[0] if eh_piso else None,
             "qualidade": piso.get("qualidade"),
             "lote": lote or None,
             "local": local or None,
@@ -755,6 +783,9 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
         det = {"descricao": linhas, "ficha": ficha}
         if len(fotos_prod) > 1:
             det["galeria"] = fotos_prod
+        mais_faces = fotos.extras(cod, r["Nome"], faces_pisos.get(cod, (None, []))[1]) if eh_piso else []
+        if mais_faces:
+            det["faces"] = mais_faces
         detalhes.setdefault(cod[-2:].zfill(2), {})[cod] = det
 
     no_site = {p["cod"] for p in catalogo}
