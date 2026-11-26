@@ -483,6 +483,10 @@ RX_PECAS = re.compile(r"(\d+)\s*p[çc]", re.I)
 RX_PEI = re.compile(r"PEI\s*[-:]?\s*(\d|L[A-Z]|[A-E])\b", re.I)
 RX_JUNTA = re.compile(r"JUNTA\s*:?\s*(\d+(?:[.,]\d+)?)\s*mm", re.I)
 RX_QUALIDADE = re.compile(r"^\s*(EXTRA|COMERCIAL|A|B|C)\s*-", re.I)
+# linha que só tem PEI e/ou junta, às vezes vazia ("JUNTA:", "PEI - LC", "PEI - A", "JUNTA 2MM"):
+# não é descrição de verdade; os dois valores já vão para a frase montada e para a ficha técnica
+RX_SO_TECNICO = re.compile(
+    r"^\s*(?:PEI\s*[-:]?\s*(?:\d|L[A-Z]|[A-E])?\s*-?\s*)?(?:JUNTA\s*:?\s*(?:\d+(?:[.,]\d+)?\s*mm)?)?\s*[.;]?\s*$", re.I)
 
 
 def linhas_descricao(texto):
@@ -744,7 +748,9 @@ def montar(cadastro, precos, automec, fotos, ret_vista, ret_prazo, black, vendas
             "local": local or None,
         }.items() if v}
         linhas = linhas_descricao(desc)
-        if piso and not [l for l in linhas if not RX_QUALIDADE.match(l) and not RX_FATOR.search(l)]:
+        if piso and not [l for l in linhas if not RX_QUALIDADE.match(l) and not RX_FATOR.search(l)
+                         and not RX_SO_TECNICO.match(l)]:
+            linhas = [l for l in linhas if not RX_SO_TECNICO.match(l)]
             linhas += descricao_piso(item["nome"], item.get("marca"), piso)
         det = {"descricao": linhas, "ficha": ficha}
         if len(fotos_prod) > 1:
