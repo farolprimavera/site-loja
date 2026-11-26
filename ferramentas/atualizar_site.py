@@ -528,8 +528,6 @@ def descricao_piso(nome, marca, piso):
     """Piso que só tem a linha 'EXTRA - CX ...': monta uma descrição com os dados da caixa."""
     nome = re.sub(r"(\d)X(\d)", r"\1x\2", nome)
     frase = nome + (f" {marca}" if marca and marca.lower() not in nome.lower() else "")
-    if piso.get("qualidade"):
-        frase += f", qualidade {piso['qualidade'].capitalize()}"
     caixa = f"{piso['fator']:.2f}".replace(".", ",") + " m²"
     pecas = int(piso["pecas"]) if str(piso.get("pecas", "")).isdigit() else None
     frase += f", vendido em caixa fechada com {caixa}" + (f" ({pecas} peças)." if pecas else ".")

@@ -55,11 +55,12 @@ if (!p) {
         <span class="nota" id="m2-texto">Arredondamos para caixas fechadas. Dica: some de 10% a 15% para recortes e quebras.</span></label>`
     : '';
 
+  // pisos: código e lote já aparecem lá em cima; qualidade e localização na loja não interessam ao cliente
   const ficha = [
-    ['Código do produto', p.cod], ['Código de barras (EAN)', p.ean], ['Marca', p.marca], ['Categoria', `${p.grupo} › ${p.sub}`],
+    ['Código do produto', p.fator ? null : p.cod], ['Código de barras (EAN)', p.ean], ['Marca', p.marca], ['Categoria', `${p.grupo} › ${p.sub}`],
     ['Vendido por', p.fator ? 'caixa' : p.un], ['Peso', f.peso_kg ? `${f.peso_kg.toLocaleString('pt-BR')} kg` : null],
     ['m² por caixa', p.fator ? `${fmt(p.fator)} m²` : null], ['Peças por caixa', f.pecas_caixa], ['PEI', f.pei],
-    ['Junta', f.junta_mm ? `${f.junta_mm} mm` : null], ['Qualidade', f.qualidade], ['Lote', f.lote], ['Localização', f.local],
+    ['Junta', f.junta_mm ? `${f.junta_mm} mm` : null],
   ].filter((x) => x[1]);
 
   // linhas "Rótulo: valor" ou "Rótulo - valor" ficam com o rótulo em negrito
