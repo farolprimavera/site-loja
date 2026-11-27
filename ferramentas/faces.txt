@@ -192,3 +192,7 @@
 1012915 = 3  # PISO DOMMUS POL 61x116 LT:07/11/26 (E1) — pelo painel (David, 26/11/2026)
 1012916 = 3  # PISO CREMO DELICATO POL 61x116 LT:05/11/26 (C) — pelo painel (David, 26/11/2026)
 1012917 = 3  # PISO STATUARIO POL 61x116 LT:04/11/26 (C) — pelo painel (David, 26/11/2026)
+1012936 = 3  # PISO HD BRONZE 61x116 LT:18/11/26 (E2) — faces da Rocha, direto no código (David, 27/11/2026)
+1012937 = 4  # PISO ONIX GOLD 61x116 LT:20/11/26 (E2) — faces da Rocha, direto no código (David, 27/11/2026)
+1012938 = 3  # PISO HD DAMASCO 61x116 LT:02/11/26 (E2) — faces da Rocha, direto no código (David, 27/11/2026)
+1012939 = 3  # PISO HD MARMO NERO 61x116 LT:10/11/26 (E2) — faces da Rocha, direto no código (David, 27/11/2026)
